@@ -58,21 +58,25 @@ public class TrackCommand extends AbstractCommand {
             text.append(links[i])
                 .append(" - ");
 
-            try {
-                URL url = URL.parse(links[i]);
-                User user = userDao.get(id);
-                if (!user.contains(url)) {
-                    log.info("Added url: {} for user: {}", url, id);
-                    user.addUrl(url);
-                }
-                text.append("tracked");
-            } catch (GalimatiasParseException e) {
-                log.info("Invalid URL: {} for user: {}", links[i], id);
-                text.append("invalid URL");
-            }
+            processLink(id, text, links[i]);
             text.append(LINE_SEPARATOR);
         }
 
         return text.toString();
+    }
+
+    private void processLink(long id, StringBuilder text, String link) {
+        try {
+            URL url = URL.parse(link);
+            User user = userDao.get(id);
+            if (!user.contains(url)) {
+                log.info("Added url: {} for user: {}", url, id);
+                user.addUrl(url);
+            }
+            text.append("tracked");
+        } catch (GalimatiasParseException e) {
+            log.info("Invalid URL: {} for user: {}", link, id);
+            text.append("invalid URL");
+        }
     }
 }
