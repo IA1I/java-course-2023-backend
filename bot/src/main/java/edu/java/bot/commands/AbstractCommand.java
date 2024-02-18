@@ -1,7 +1,5 @@
 package edu.java.bot.commands;
 
-//import com.pengrad.telegrambot.model.User;
-
 import edu.java.bot.dao.Dao;
 import edu.java.bot.dto.User;
 import edu.java.bot.processors.UserMessageProcessor;
