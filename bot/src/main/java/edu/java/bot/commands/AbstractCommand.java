@@ -19,7 +19,7 @@ public abstract class AbstractCommand implements Command {
         this.userDao = userDao;
     }
 
-    public boolean isRegistered(long id) {
+    protected boolean isRegistered(long id) {
         return userDao.contains(id);
     }
 }
