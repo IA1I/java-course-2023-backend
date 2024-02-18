@@ -10,6 +10,7 @@ import com.pengrad.telegrambot.response.BaseResponse;
 import edu.java.bot.commands.Command;
 import edu.java.bot.configuration.ApplicationConfig;
 import edu.java.bot.processors.UserMessageProcessor;
+import jakarta.annotation.PostConstruct;
 import java.util.List;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +26,12 @@ public class LinkTrackerBot implements Bot {
     public LinkTrackerBot(ApplicationConfig config, UserMessageProcessor processor) {
         this.bot = new TelegramBot(config.telegramToken());
         this.processor = processor;
-        start();
     }
 
     @Override
     public <T extends BaseRequest<T, R>, R extends BaseResponse> void execute(BaseRequest<T, R> request) {
-        bot.execute(request);
         log.info("Executing the request {}", request.getContentType());
+        bot.execute(request);
     }
 
     @Override
@@ -43,13 +43,14 @@ public class LinkTrackerBot implements Bot {
         return CONFIRMED_UPDATES_ALL;
     }
 
+    @PostConstruct
     @Override
     public void start() {
-        log.info("The bot has started working");
-        createMenu();
-
-        log.info("Set updates listener");
         bot.setUpdatesListener(this);
+        log.info("Set updates listener");
+
+        createMenu();
+        log.info("The bot has started working");
     }
 
     @Override
@@ -63,7 +64,7 @@ public class LinkTrackerBot implements Bot {
         BotCommand[] actualCommands = response.commands();
         log.info("Getting the current list of bot commands");
 
-        if (actualCommands.length != processor.commands().size()) {
+        if (actualCommands != null && actualCommands.length != processor.commands().size()) {
             bot.execute(createCommandsForMenu());
             log.info("Creating a bot command menu");
         }
