@@ -22,7 +22,7 @@ public class DefaultUserMessageProcessor implements UserMessageProcessor {
     }
 
     @Override
-    public List<? extends Command> commands() {
+    public List<Command> commands() {
         return commands;
     }
 
