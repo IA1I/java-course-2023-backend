@@ -17,6 +17,7 @@ target/
 *.iws
 *.iml
 *.ipr
+bot/src/main/resources/token.env
 
 ### NetBeans ###
 /nbproject/private/
