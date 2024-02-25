@@ -91,6 +91,7 @@ public class GithubClientTest {
         try {
             return Files.readString(Path.of(fileName));
         } catch (IOException e) {
+            System.out.println(e.getMessage());
             return "[]";
         }
     }
