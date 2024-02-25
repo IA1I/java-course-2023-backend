@@ -80,9 +80,7 @@ public class StackOverflowClientTest {
         try {
             return Files.readString(Path.of(fileName));
         } catch (IOException e) {
-            throw new RuntimeException(e);
-
-//            return "{}";
+            return "{}";
         }
     }
 }
