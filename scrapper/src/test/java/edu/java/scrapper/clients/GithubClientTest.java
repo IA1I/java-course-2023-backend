@@ -34,7 +34,7 @@ public class GithubClientTest {
     void shouldReturnLastUpdate() {
         Update expected = new Update(17230697424L, OffsetDateTime.parse("2024-02-23T12:00:13Z"));
 
-        String json = readFile("scrapper\\src\\test\\resources\\github\\response.json");
+        String json = readFile("src\\test\\resources\\github\\response.json");
         wireMockServer.stubFor(get("/repos/IA1I/java-course-2023-backend/activity")
             .willReturn(
                 aResponse()

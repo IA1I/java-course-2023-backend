@@ -39,7 +39,7 @@ public class StackOverflowClientTest {
             OffsetDateTime.ofInstant(Instant.ofEpochSecond(1680185464L), ZoneOffset.UTC)
         );
 
-        String json = readFile("scrapper\\src\\test\\resources\\stackoverflow\\response.json");
+        String json = readFile("response.json");
         wireMockServer.stubFor(get("/2.3/questions/1642028?site=stackoverflow")
             .willReturn(
                 aResponse()
