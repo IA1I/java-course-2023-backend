@@ -39,7 +39,7 @@ public class StackOverflowClientTest {
             OffsetDateTime.ofInstant(Instant.ofEpochSecond(1680185464L), ZoneOffset.UTC)
         );
 
-        String json = readFile("response.json");
+        String json = readFile("src/test/resources/stackoverflow/response.json");
         wireMockServer.stubFor(get("/2.3/questions/1642028?site=stackoverflow")
             .willReturn(
                 aResponse()
@@ -56,7 +56,7 @@ public class StackOverflowClientTest {
 
     @Test
     void shouldReturnNullForEmptyJson() {
-        String json = readFile("stackoverflow/empty_response.json");
+        String json = readFile("src/test/resources/stackoverflow/empty_response.json");
         wireMockServer.stubFor(get("/2.3/questions/1642028?site=stackoverflow")
             .willReturn(
                 aResponse()

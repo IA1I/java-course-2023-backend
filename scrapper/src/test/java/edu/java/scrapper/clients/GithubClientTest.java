@@ -1,22 +1,20 @@
 package edu.java.scrapper.clients;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import edu.java.scrapper.clients.github.DefaultGithubClient;
 import edu.java.scrapper.clients.github.GithubClient;
 import edu.java.scrapper.dto.RepositoryResponse;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.OffsetDateTime;
-
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static edu.java.scrapper.dto.RepositoryResponse.*;
+import static edu.java.scrapper.dto.RepositoryResponse.Update;
 
 public class GithubClientTest {
 
@@ -51,7 +49,7 @@ public class GithubClientTest {
 
     @Test
     void shouldReturnNullForEmptyJson() {
-        String json = readFile("resources/github/empty_response.json");
+        String json = readFile("src/test/resources/github/empty_response.json");
         wireMockServer.stubFor(get("/repos/IA1I/java-course-2023-backend/activity")
             .willReturn(
                 aResponse()
