@@ -1,14 +1,15 @@
 package edu.java.scrapper.clients.stackoverflow;
 
+import edu.java.scrapper.configuration.ApplicationConfig;
 import edu.java.scrapper.dto.QuestionResponse;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 public class DefaultStackOverflowClient implements StackOverflowClient {
-    private static final String BASE_URL = "https://api.stackexchange.com";
     private final WebClient webClient;
 
-    public DefaultStackOverflowClient() {
-        this(BASE_URL);
+    public DefaultStackOverflowClient(ApplicationConfig applicationConfig) {
+        this(applicationConfig.stackOverflowBaseUrl());
     }
 
     public DefaultStackOverflowClient(String baseUrl) {
@@ -16,13 +17,11 @@ public class DefaultStackOverflowClient implements StackOverflowClient {
     }
 
     @Override
-    public QuestionResponse getQuestionActivity(String id) {
-
+    public Mono<QuestionResponse> getQuestionActivity(String id) {
         return webClient
             .get()
-            .uri("/2.3/questions/{id}?site=stackoverflow", id)
+            .uri("/questions/{id}?site=stackoverflow", id)
             .retrieve()
-            .bodyToMono(QuestionResponse.class)
-            .block();
+            .bodyToMono(QuestionResponse.class);
     }
 }

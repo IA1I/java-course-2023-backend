@@ -9,12 +9,12 @@ import org.springframework.context.annotation.Configuration;
 public class ClientConfiguration {
 
     @Bean
-    public DefaultGithubClient githubClient() {
-        return new DefaultGithubClient();
+    public DefaultGithubClient githubClient(ApplicationConfig applicationConfig) {
+        return new DefaultGithubClient(applicationConfig);
     }
 
     @Bean
-    public DefaultStackOverflowClient stackOverflowClient() {
-        return new DefaultStackOverflowClient();
+    public DefaultStackOverflowClient stackOverflowClient(ApplicationConfig applicationConfig) {
+        return new DefaultStackOverflowClient(applicationConfig);
     }
 }

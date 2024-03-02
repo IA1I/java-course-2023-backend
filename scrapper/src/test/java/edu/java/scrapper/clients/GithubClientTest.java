@@ -3,18 +3,21 @@ package edu.java.scrapper.clients;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import edu.java.scrapper.clients.github.DefaultGithubClient;
 import edu.java.scrapper.clients.github.GithubClient;
-import edu.java.scrapper.dto.RepositoryResponse;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.OffsetDateTime;
+import java.util.List;
+import edu.java.scrapper.dto.Update;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static edu.java.scrapper.dto.RepositoryResponse.Update;
+
 
 public class GithubClientTest {
 
@@ -41,14 +44,14 @@ public class GithubClientTest {
             )
         );
 
-        RepositoryResponse response = client.getRepositoryActivity("IA1I", "java-course-2023-backend");
-        Update actual = response.getLastUpdate();
+        Mono<List<Update>> response = client.getRepositoryActivity("IA1I", "java-course-2023-backend");
+        Update actual = response.block().getFirst();
 
         Assertions.assertThat(actual).isEqualTo(expected);
     }
 
     @Test
-    void shouldReturnNullForEmptyJson() {
+    void shouldReturnEmptyListForEmptyJson() {
         String json = readFile("src/test/resources/github/empty_response.json");
         wireMockServer.stubFor(get("/repos/IA1I/java-course-2023-backend/activity")
             .willReturn(
@@ -58,26 +61,10 @@ public class GithubClientTest {
             )
         );
 
-        RepositoryResponse response = client.getRepositoryActivity("IA1I", "java-course-2023-backend");
-        Update actual = response.getLastUpdate();
+        Mono<List<Update>> response = client.getRepositoryActivity("IA1I", "java-course-2023-backend");
+        List<Update> actual = response.block();
 
-        Assertions.assertThat(actual).isNull();
-    }
-
-    @Test
-    void shouldReturnNullForBadResponse() {
-        wireMockServer.stubFor(get("/repos/IA1I/java-course-2023-backend/activity")
-            .willReturn(
-                aResponse()
-                    .withHeader("Content-Type", "application/json")
-                    .withBody("json")
-            )
-        );
-
-        RepositoryResponse response = client.getRepositoryActivity("IA1I", "java-course-2023-backend");
-        Update actual = response.getLastUpdate();
-
-        Assertions.assertThat(actual).isNull();
+        Assertions.assertThat(actual.isEmpty()).isTrue();
     }
 
     @AfterAll
@@ -87,7 +74,11 @@ public class GithubClientTest {
 
     private String readFile(String fileName) {
         try {
-            return Files.readString(Path.of(fileName));
+            Path path = Paths.get(fileName);
+            if (!Files.exists(path)) {
+                return Files.readString(Paths.get("scrapper/" + fileName));
+            }
+            return Files.readString(path);
         } catch (IOException e) {
             return "[]";
         }

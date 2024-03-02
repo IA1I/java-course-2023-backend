@@ -7,6 +7,7 @@ import edu.java.scrapper.dto.QuestionResponse;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -14,6 +15,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import reactor.core.publisher.Mono;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static edu.java.scrapper.dto.QuestionResponse.Item;
@@ -40,7 +43,7 @@ public class StackOverflowClientTest {
         );
 
         String json = readFile("src/test/resources/stackoverflow/response.json");
-        wireMockServer.stubFor(get("/2.3/questions/1642028?site=stackoverflow")
+        wireMockServer.stubFor(get("/questions/1642028?site=stackoverflow")
             .willReturn(
                 aResponse()
                     .withHeader("Content-Type", "application/json")
@@ -48,8 +51,10 @@ public class StackOverflowClientTest {
             )
         );
 
-        QuestionResponse response = client.getQuestionActivity("1642028");
-        Item actual = response.getItem();
+        Mono<QuestionResponse> response = client.getQuestionActivity("1642028");
+        var res = response.block();
+        System.out.println(res);
+        Item actual = response.block().getItem();
 
         Assertions.assertThat(actual).isEqualTo(expected);
     }
@@ -57,7 +62,7 @@ public class StackOverflowClientTest {
     @Test
     void shouldReturnNullForEmptyJson() {
         String json = readFile("src/test/resources/stackoverflow/empty_response.json");
-        wireMockServer.stubFor(get("/2.3/questions/1642028?site=stackoverflow")
+        wireMockServer.stubFor(get("/questions/1642028?site=stackoverflow")
             .willReturn(
                 aResponse()
                     .withHeader("Content-Type", "application/json")
@@ -65,8 +70,8 @@ public class StackOverflowClientTest {
             )
         );
 
-        QuestionResponse response = client.getQuestionActivity("1642028");
-        Item actual = response.getItem();
+        Mono<QuestionResponse> response = client.getQuestionActivity("1642028");
+        Item actual = response.block().getItem();
 
         Assertions.assertThat(actual).isNull();
     }
@@ -78,7 +83,11 @@ public class StackOverflowClientTest {
 
     private String readFile(String fileName) {
         try {
-            return Files.readString(Path.of(fileName));
+            Path path = Paths.get(fileName);
+            if (!Files.exists(path)) {
+                return Files.readString(Paths.get("scrapper/" + fileName));
+            }
+            return Files.readString(path);
         } catch (IOException e) {
             return "{}";
         }
