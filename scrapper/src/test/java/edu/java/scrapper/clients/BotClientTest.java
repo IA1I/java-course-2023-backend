@@ -18,7 +18,7 @@ public class BotClientTest {
 
     @BeforeAll
     public static void beforeAll() {
-        wireMockServer = new WireMockServer(8081);
+        wireMockServer = new WireMockServer();
         wireMockServer.start();
         client = new DefaultBotClient(wireMockServer.baseUrl());
     }
