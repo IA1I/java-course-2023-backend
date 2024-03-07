@@ -4,5 +4,5 @@ CREATE TABLE IF NOT EXISTS chat
     tg_chat_id bigint NOT NULL,
 
     PRIMARY KEY (chat_id),
-    UNIQUE (chat_id)
+    UNIQUE (tg_chat_id)
 );
