@@ -2,8 +2,8 @@ package edu.java.scrapper.configuration;
 
 import edu.java.scrapper.client.bot.BotClient;
 import edu.java.scrapper.client.bot.DefaultBotClient;
-import edu.java.scrapper.clients.github.DefaultGithubClient;
-import edu.java.scrapper.clients.stackoverflow.DefaultStackOverflowClient;
+import edu.java.scrapper.client.github.DefaultGithubClient;
+import edu.java.scrapper.client.stackoverflow.DefaultStackOverflowClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
