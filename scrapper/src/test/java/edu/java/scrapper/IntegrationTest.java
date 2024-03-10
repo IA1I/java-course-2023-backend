@@ -1,26 +1,24 @@
 package edu.java.scrapper;
 
-import liquibase.Contexts;
-import liquibase.LabelExpression;
-import liquibase.Liquibase;
-import liquibase.database.Database;
-import liquibase.database.DatabaseFactory;
-import liquibase.database.jvm.JdbcConnection;
-import liquibase.exception.DatabaseException;
-import liquibase.exception.LiquibaseException;
-import liquibase.resource.ClassLoaderResourceAccessor;
-import liquibase.resource.DirectoryResourceAccessor;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.JdbcDatabaseContainer;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Testcontainers;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import liquibase.Contexts;
+import liquibase.LabelExpression;
+import liquibase.Liquibase;
+import liquibase.database.Database;
+import liquibase.database.DatabaseFactory;
+import liquibase.database.jvm.JdbcConnection;
+import liquibase.exception.LiquibaseException;
+import liquibase.resource.DirectoryResourceAccessor;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.JdbcDatabaseContainer;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
 public abstract class IntegrationTest {
@@ -37,13 +35,11 @@ public abstract class IntegrationTest {
     }
 
     private static void runMigrations(JdbcDatabaseContainer<?> c) {
-        // ...
         String jdbcUrl = c.getJdbcUrl();
         String userName = c.getUsername();
         String password = c.getPassword();
         Path path =
             new File(".").toPath().toAbsolutePath().getParent().getParent().resolve("migrations");
-        System.out.println(path);
         try {
             Connection connection = DriverManager.getConnection(jdbcUrl, userName, password);
             Database database =
