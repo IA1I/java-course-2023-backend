@@ -1,11 +1,16 @@
 package edu.java.scrapper.dto.response;
 
+import edu.java.scrapper.dto.Link;
 import java.util.Objects;
 
 public record LinkResponse(
-    long id,
+    Long id,
     String url
 ) {
+    public LinkResponse(Link link) {
+        this(link.getLinkId(), link.getUri().toString());
+    }
+
     @Override public boolean equals(Object o) {
         if (this == o) {
             return true;

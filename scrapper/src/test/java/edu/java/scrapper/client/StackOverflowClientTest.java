@@ -3,11 +3,7 @@ package edu.java.scrapper.client;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import edu.java.scrapper.client.stackoverflow.DefaultStackOverflowClient;
 import edu.java.scrapper.client.stackoverflow.StackOverflowClient;
-import edu.java.scrapper.dto.QuestionResponse;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import edu.java.scrapper.dto.response.QuestionResponse;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -18,7 +14,8 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static edu.java.scrapper.dto.QuestionResponse.Item;
+import static edu.java.scrapper.TestUtils.readFile;
+import static edu.java.scrapper.dto.response.QuestionResponse.Item;
 
 public class StackOverflowClientTest {
     static WireMockServer wireMockServer;
@@ -80,15 +77,4 @@ public class StackOverflowClientTest {
         wireMockServer.stop();
     }
 
-    private String readFile(String fileName) {
-        try {
-            Path path = Paths.get(fileName);
-            if (!Files.exists(path)) {
-                return Files.readString(Paths.get("scrapper/" + fileName));
-            }
-            return Files.readString(path);
-        } catch (IOException e) {
-            return "{}";
-        }
-    }
 }

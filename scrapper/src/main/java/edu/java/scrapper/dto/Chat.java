@@ -1,50 +1,35 @@
 package edu.java.scrapper.dto;
 
-import edu.java.scrapper.dto.response.LinkResponse;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
+@Setter
+@ToString
 public class Chat {
-    private long linkId;
+    private long chatId;
+    private long tgChatId;
 
-    private final long id;
-    private final List<LinkResponse> links;
-
-    public Chat(long id) {
-        this.id = id;
-        this.links = new ArrayList<>();
-        this.linkId = 0L;
-    }
-
-    public LinkResponse addLink(String uri) {
-        LinkResponse link = new LinkResponse(linkId++, uri);
-        links.add(link);
-
-        return link;
-    }
-
-    public LinkResponse removeLink(String uri) {
-        LinkResponse link = null;
-        for (LinkResponse linkResponse : links) {
-            if (linkResponse.url().equals(uri)) {
-                link = linkResponse;
-                break;
-            }
+    @Override public boolean equals(Object o) {
+        if (this == o) {
+            return true;
         }
-        links.remove(link);
-
-        return link;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Chat chat = (Chat) o;
+        return tgChatId == chat.tgChatId;
     }
 
-    public boolean containsLink(String uri) {
-        for (LinkResponse link : links) {
-            if (link.url().equals(uri)) {
-                return true;
-            }
-        }
-
-        return false;
+    @Override
+    public int hashCode() {
+        return Objects.hash(tgChatId);
     }
 }
+

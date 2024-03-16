@@ -1,4 +1,4 @@
-package edu.java.scrapper.dto;
+package edu.java.scrapper.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -15,9 +15,9 @@ public record QuestionResponse(List<Item> items) {
     @JsonIgnoreProperties(ignoreUnknown = true)
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public record Item(
-        boolean isAnswered,
-        int viewCount,
-        int answerCount,
+        Boolean isAnswered,
+        Integer viewCount,
+        Integer answerCount,
         OffsetDateTime lastActivityDate,
         OffsetDateTime lastEditDate
     ) {

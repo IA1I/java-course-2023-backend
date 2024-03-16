@@ -1,9 +1,7 @@
 package edu.java.scrapper.controller;
 
-import edu.java.scrapper.dao.ChatLocalDao;
-import edu.java.scrapper.dto.Chat;
-import edu.java.scrapper.exception.ChatIsNotRegisteredException;
-import edu.java.scrapper.exception.ReRegistrationException;
+import edu.java.scrapper.service.ChatService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,27 +13,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/tg-chat")
 public class ChatController {
-    private final ChatLocalDao chatLocalDao;
+    private final ChatService chatService;
 
-    public ChatController(ChatLocalDao chatLocalDao) {
-        this.chatLocalDao = chatLocalDao;
+    @Autowired
+    public ChatController(ChatService chatService) {
+        this.chatService = chatService;
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<String> addChat(@PathVariable("id") long id) throws ReRegistrationException {
-        if (chatLocalDao.contains(id)) {
-            throw new ReRegistrationException("Chat is already registered");
-        }
-        chatLocalDao.save(new Chat(id));
+    public ResponseEntity<String> addChat(@PathVariable("id") Long id) {
+        chatService.register(id);
+
         return new ResponseEntity<>("Chat registered", HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteChat(@PathVariable("id") long id) throws ChatIsNotRegisteredException {
-        if (!chatLocalDao.contains(id)) {
-            throw new ChatIsNotRegisteredException("Chat is not registered");
-        }
-        chatLocalDao.delete(id);
+    public ResponseEntity<String> deleteChat(@PathVariable("id") Long id) {
+        chatService.unregister(id);
+
         return new ResponseEntity<>("Chat deleted", HttpStatus.OK);
     }
 

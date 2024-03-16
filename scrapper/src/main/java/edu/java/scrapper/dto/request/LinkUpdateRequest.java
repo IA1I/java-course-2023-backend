@@ -1,9 +1,9 @@
 package edu.java.scrapper.dto.request;
 
 public record LinkUpdateRequest(
-    long id,
+    Long id,
     String url,
     String description,
-    long[] tgChatIds
+    Long[] tgChatIds
 ) {
 }

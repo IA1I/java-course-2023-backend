@@ -3,8 +3,8 @@ app:
     enable: true
     interval: 10s
     force-check-delay: 10s
-  github-base-url: https://api.github.com
-  stackoverflow-base-url: https://api.stackexchange.com/2.3
+  github-base-url: http://localhost:8081
+  stackoverflow-base-url: http://localhost:8081
   bot-base-url: http://localhost:8090
 
 spring:
@@ -25,3 +25,6 @@ server:
 
 logging:
   config: classpath:log4j2-plain.xml
+
+wire-mock:
+  port: 8081

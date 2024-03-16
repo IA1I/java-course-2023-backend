@@ -5,7 +5,7 @@ import java.time.OffsetDateTime;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record Update(
-    Long id,
+    long id,
     OffsetDateTime timestamp
 ) {
 }

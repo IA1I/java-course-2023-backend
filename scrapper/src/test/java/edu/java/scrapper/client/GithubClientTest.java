@@ -3,13 +3,9 @@ package edu.java.scrapper.client;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import edu.java.scrapper.client.github.DefaultGithubClient;
 import edu.java.scrapper.client.github.GithubClient;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import edu.java.scrapper.dto.Update;
 import java.time.OffsetDateTime;
 import java.util.List;
-import edu.java.scrapper.dto.Update;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -17,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
-
+import static edu.java.scrapper.TestUtils.readFile;
 
 public class GithubClientTest {
 
@@ -72,15 +68,4 @@ public class GithubClientTest {
         wireMockServer.stop();
     }
 
-    private String readFile(String fileName) {
-        try {
-            Path path = Paths.get(fileName);
-            if (!Files.exists(path)) {
-                return Files.readString(Paths.get("scrapper/" + fileName));
-            }
-            return Files.readString(path);
-        } catch (IOException e) {
-            return "[]";
-        }
-    }
 }

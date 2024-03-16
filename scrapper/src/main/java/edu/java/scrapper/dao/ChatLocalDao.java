@@ -4,9 +4,8 @@ import edu.java.scrapper.dto.Chat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.springframework.stereotype.Repository;
 
-@Repository
+//@Repository
 public class ChatLocalDao implements Dao<Chat, Long> {
     private final Map<Long, Chat> storage;
 
@@ -26,7 +25,7 @@ public class ChatLocalDao implements Dao<Chat, Long> {
 
     @Override
     public void save(Chat entity) {
-        storage.put(entity.getId(), entity);
+        storage.put(entity.getChatId(), entity);
     }
 
     @Override
