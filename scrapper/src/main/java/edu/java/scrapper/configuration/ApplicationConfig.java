@@ -10,12 +10,12 @@ import org.springframework.validation.annotation.Validated;
 public record ApplicationConfig(
     @NotNull
     Scheduler scheduler,
-
     @NotNull
     String githubBaseUrl,
-
     @NotNull
-    String stackOverflowBaseUrl
+    String stackOverflowBaseUrl,
+    @NotNull
+    String botBaseUrl
 ) {
     public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
     }

@@ -1,0 +1,30 @@
+app:
+  scheduler:
+    enable: true
+    interval: 10s
+    force-check-delay: 10s
+  github-base-url: http://localhost:8081
+  stackoverflow-base-url: http://localhost:8081
+  bot-base-url: http://localhost:8090
+
+spring:
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+  application:
+    name: scrapper
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://postgresql:5432/scrapper
+    username: postgres
+    password: postgres
+  liquibase:
+    enabled: false
+
+server:
+  port: 8080
+
+logging:
+  config: classpath:log4j2-plain.xml
+
+wire-mock:
+  port: 8081
