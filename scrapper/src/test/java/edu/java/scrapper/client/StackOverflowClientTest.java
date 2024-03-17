@@ -49,7 +49,7 @@ public class StackOverflowClientTest {
 
         Mono<QuestionResponse> response = client.getQuestionActivity("1642028");
         var res = response.block();
-        System.out.println(res);
+
         Item actual = response.block().getItem();
 
         Assertions.assertThat(actual).isEqualTo(expected);
