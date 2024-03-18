@@ -1,4 +1,4 @@
-package edu.java.scrapper.dao.repository;
+package edu.java.scrapper.dao.repository.jdbc;
 
 import edu.java.scrapper.dao.mapper.LinkRowMapper;
 import edu.java.scrapper.dto.Link;
@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class JdbcLinkDao {
+public class JdbcLinkRepository {
     private static final String SELECT_FROM_LINK_BY_ID = "SELECT * FROM link WHERE link_id = ?";
     private static final String SELECT_FROM_LINK_BY_URI = "SELECT * FROM link WHERE uri = ?";
     private static final String SELECT_ALL_FROM_LINK = "SELECT * FROM link";
@@ -21,7 +21,7 @@ public class JdbcLinkDao {
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public JdbcLinkDao(JdbcTemplate jdbcTemplate) {
+    public JdbcLinkRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -43,6 +43,15 @@ public class JdbcLinkDao {
             entity.getUri().toString(),
             entity.getUpdatedAt(),
             entity.getLastCheck()
+        );
+    }
+
+    public void update(Link entity) {
+        jdbcTemplate.update(
+            "UPDATE link SET updated_at = ?, last_check = ? WHERE link_id = ?",
+            entity.getUpdatedAt(),
+            entity.getLastCheck(),
+            entity.getLinkId()
         );
     }
 

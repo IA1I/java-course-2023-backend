@@ -1,7 +1,7 @@
-package edu.java.scrapper.dao;
+package edu.java.scrapper.dao.jdbc;
 
 import edu.java.scrapper.IntegrationTest;
-import edu.java.scrapper.dao.repository.JdbcLinkDao;
+import edu.java.scrapper.dao.repository.jdbc.JdbcLinkRepository;
 import edu.java.scrapper.dto.Link;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,9 +17,9 @@ import java.time.ZoneOffset;
 import java.util.List;
 
 @SpringBootTest
-public class JdbcLinkDaoTest extends IntegrationTest {
+public class JdbcLinkRepositoryTest extends IntegrationTest {
     @Autowired
-    private JdbcLinkDao linkDao;
+    private JdbcLinkRepository linkDao;
 
     @Test
     @Transactional

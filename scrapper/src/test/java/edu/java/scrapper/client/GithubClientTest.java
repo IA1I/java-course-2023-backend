@@ -3,7 +3,7 @@ package edu.java.scrapper.client;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import edu.java.scrapper.client.github.DefaultGithubClient;
 import edu.java.scrapper.client.github.GithubClient;
-import edu.java.scrapper.dto.Update;
+import edu.java.scrapper.dto.response.UpdateResponse;
 import java.time.OffsetDateTime;
 import java.util.List;
 import org.assertj.core.api.Assertions;
@@ -29,7 +29,12 @@ public class GithubClientTest {
 
     @Test
     void shouldReturnLastUpdate() {
+<<<<<<< Updated upstream
         Update expected = new Update(17230697424L, OffsetDateTime.parse("2024-02-23T12:00:13Z"));
+=======
+        UpdateResponse expected =
+            new UpdateResponse(17230697424L, OffsetDateTime.parse("2024-02-23T12:00:13Z"), "push");
+>>>>>>> Stashed changes
 
         String json = readFile("src/test/resources/github/response.json");
         wireMockServer.stubFor(get("/repos/IA1I/java-course-2023-backend/activity")
@@ -40,8 +45,8 @@ public class GithubClientTest {
             )
         );
 
-        Mono<List<Update>> response = client.getRepositoryActivity("IA1I", "java-course-2023-backend");
-        Update actual = response.block().getFirst();
+        Mono<List<UpdateResponse>> response = client.getRepositoryActivity("IA1I", "java-course-2023-backend");
+        UpdateResponse actual = response.block().getFirst();
 
         Assertions.assertThat(actual).isEqualTo(expected);
     }
@@ -57,8 +62,8 @@ public class GithubClientTest {
             )
         );
 
-        Mono<List<Update>> response = client.getRepositoryActivity("IA1I", "java-course-2023-backend");
-        List<Update> actual = response.block();
+        Mono<List<UpdateResponse>> response = client.getRepositoryActivity("IA1I", "java-course-2023-backend");
+        List<UpdateResponse> actual = response.block();
 
         Assertions.assertThat(actual.isEmpty()).isTrue();
     }

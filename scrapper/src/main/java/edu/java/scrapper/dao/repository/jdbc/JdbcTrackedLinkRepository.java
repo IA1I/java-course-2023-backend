@@ -1,4 +1,4 @@
-package edu.java.scrapper.dao.repository;
+package edu.java.scrapper.dao.repository.jdbc;
 
 import edu.java.scrapper.dao.mapper.ChatRowMapper;
 import edu.java.scrapper.dao.mapper.LinkRowMapper;
@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class JdbcTrackedLinkDao {
+public class JdbcTrackedLinkRepository {
     private static final String INSERT_INTO_TRACKED_LINK = "INSERT INTO tracked_link VALUES (?, ?)";
     private static final String DELETE_FROM_TRACKED_LINK =
         "DELETE FROM tracked_link WHERE chat_id = ? AND link_id = ?";
@@ -25,7 +25,7 @@ public class JdbcTrackedLinkDao {
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public JdbcTrackedLinkDao(JdbcTemplate jdbcTemplate) {
+    public JdbcTrackedLinkRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

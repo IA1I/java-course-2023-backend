@@ -1,4 +1,4 @@
-package edu.java.scrapper.dao.repository;
+package edu.java.scrapper.dao.repository.jdbc;
 
 import edu.java.scrapper.dao.mapper.ChatRowMapper;
 import edu.java.scrapper.dto.Chat;
@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class JdbcChatDao {
+public class JdbcChatRepository {
     private static final String SELECT_FROM_CHAT_BY_ID = "SELECT * FROM chat WHERE chat_id = ?";
     private static final String SELECT_FROM_CHAT_BY_TG_CHAT_ID = "SELECT * FROM chat WHERE tg_chat_id = ?";
     private static final String SELECT_ALL_FROM_CHAT = "SELECT * FROM chat";
@@ -18,7 +18,7 @@ public class JdbcChatDao {
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public JdbcChatDao(JdbcTemplate jdbcTemplate) {
+    public JdbcChatRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

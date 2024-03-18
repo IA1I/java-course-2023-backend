@@ -3,6 +3,7 @@ package edu.java.scrapper.dto;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 @Getter
 @Setter
 @ToString
+@Data
 public class Link {
     private long linkId;
     private URI uri;
@@ -32,12 +34,11 @@ public class Link {
 
         Link link = (Link) o;
 
-        return new EqualsBuilder().append(uri, link.uri).append(updatedAt, link.updatedAt)
-            .append(lastCheck, link.lastCheck).isEquals();
+        return new EqualsBuilder().append(uri, link.uri).isEquals();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37).append(uri).append(updatedAt).append(lastCheck).toHashCode();
+        return new HashCodeBuilder(17, 37).append(uri).toHashCode();
     }
 }

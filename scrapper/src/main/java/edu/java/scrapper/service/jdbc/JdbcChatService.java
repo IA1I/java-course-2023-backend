@@ -1,8 +1,8 @@
 package edu.java.scrapper.service.jdbc;
 
-import edu.java.scrapper.dao.repository.JdbcChatDao;
-import edu.java.scrapper.dao.repository.JdbcLinkDao;
-import edu.java.scrapper.dao.repository.JdbcTrackedLinkDao;
+import edu.java.scrapper.dao.repository.jdbc.JdbcChatRepository;
+import edu.java.scrapper.dao.repository.jdbc.JdbcLinkRepository;
+import edu.java.scrapper.dao.repository.jdbc.JdbcTrackedLinkRepository;
 import edu.java.scrapper.dto.Chat;
 import edu.java.scrapper.dto.Link;
 import edu.java.scrapper.exception.ReRegistrationException;
@@ -17,15 +17,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Log4j2
 public class JdbcChatService implements ChatService {
-    private final JdbcChatDao chatDao;
-    private final JdbcLinkDao linkDao;
-    private final JdbcTrackedLinkDao trackedLinkDao;
+    private final JdbcChatRepository chatRepository;
+    private final JdbcLinkRepository linkRepository;
+    private final JdbcTrackedLinkRepository trackedLinkRepository;
 
     @Autowired
-    public JdbcChatService(JdbcChatDao chatDao, JdbcLinkDao linkDao, JdbcTrackedLinkDao trackedLinkDao) {
-        this.chatDao = chatDao;
-        this.linkDao = linkDao;
-        this.trackedLinkDao = trackedLinkDao;
+    public JdbcChatService(
+        JdbcChatRepository chatRepository,
+        JdbcLinkRepository linkRepository,
+        JdbcTrackedLinkRepository trackedLinkRepository
+    ) {
+        this.chatRepository = chatRepository;
+        this.linkRepository = linkRepository;
+        this.trackedLinkRepository = trackedLinkRepository;
     }
 
     @Override
@@ -35,7 +39,7 @@ public class JdbcChatService implements ChatService {
         chat.setTgChatId(tgChatId);
 
         try {
-            chatDao.save(chat);
+            chatRepository.save(chat);
             log.info("Save chat: {} in DB", tgChatId);
         } catch (DuplicateKeyException e) {
             log.info("Chat {} already saved", tgChatId);
@@ -46,13 +50,13 @@ public class JdbcChatService implements ChatService {
     @Override
     @Transactional
     public void unregister(long tgChatId) {
-        chatDao.deleteByTgChatId(tgChatId);
-        List<Link> links = linkDao.getAll();
-        List<Link> trackedLinks = trackedLinkDao.getAllDistinctLinks();
+        chatRepository.deleteByTgChatId(tgChatId);
+        List<Link> links = linkRepository.getAll();
+        List<Link> trackedLinks = trackedLinkRepository.getAllDistinctLinks();
         links.removeAll(trackedLinks);
 
         for (Link link : links) {
-            linkDao.delete(link.getLinkId());
+            linkRepository.delete(link.getLinkId());
         }
     }
 }

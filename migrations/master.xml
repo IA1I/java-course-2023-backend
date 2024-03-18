@@ -10,4 +10,5 @@
     <include file="sql/create_table_chat.sql"/>
     <include file="sql/create_table_link.sql"/>
     <include file="sql/create_table_tracked_link.sql"/>
+    <include file="sql/create_table_question.sql"/>
 </databaseChangeLog>
