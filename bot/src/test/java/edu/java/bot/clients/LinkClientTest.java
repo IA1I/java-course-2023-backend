@@ -55,7 +55,7 @@ public class LinkClientTest {
 
     @Test
     void shouldReturnLinksResponseForRegisteredChat() {
-        LinkResponse expected = new LinkResponse(0, "https://github.com/IA1I/java-course-2023-backend");
+        LinkResponse expected = new LinkResponse(0L, "https://github.com/IA1I/java-course-2023-backend");
         AddLinkRequest addLinkRequest = new AddLinkRequest("https://github.com/IA1I/java-course-2023-backend");
 
         String json = readFile("src/test/resources/scrapper/add-link-response.json");
@@ -76,7 +76,7 @@ public class LinkClientTest {
 
     @Test
     void shouldReturnLinksResponseForRegisteredChatForRemove() {
-        LinkResponse expected = new LinkResponse(0, "https://github.com/IA1I/java-course-2023-backend");
+        LinkResponse expected = new LinkResponse(0L, "https://github.com/IA1I/java-course-2023-backend");
         RemoveLinkRequest removeLinkRequest = new RemoveLinkRequest("https://github.com/IA1I/java-course-2023-backend");
 
         String json = readFile("src/test/resources/scrapper/remove-link-response.json");

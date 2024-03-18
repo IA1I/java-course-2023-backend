@@ -35,7 +35,7 @@ public class ChatClientTest {
             )
         );
 
-        Mono<String> response = client.registerChat(1);
+        Mono<String> response = client.registerChat(1L);
         String actual = response.block();
 
         Assertions.assertThat(actual).isEqualTo(expected);
@@ -53,7 +53,7 @@ public class ChatClientTest {
             )
         );
 
-        Mono<String> response = client.deleteChat(2);
+        Mono<String> response = client.deleteChat(2L);
         String actual = response.block();
 
         Assertions.assertThat(actual).isEqualTo(expected);

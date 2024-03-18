@@ -3,7 +3,7 @@ package edu.java.scrapper.dto.response;
 import java.util.Objects;
 
 public record LinkResponse(
-    long id,
+    Long id,
     String url
 ) {
     @Override public boolean equals(Object o) {

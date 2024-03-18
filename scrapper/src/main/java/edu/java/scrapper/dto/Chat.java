@@ -39,12 +39,8 @@ public class Chat {
     }
 
     public boolean containsLink(String uri) {
-        for (LinkResponse link : links) {
-            if (link.url().equals(uri)) {
-                return true;
-            }
-        }
-
-        return false;
+        return links.stream()
+            .map(LinkResponse::url)
+            .anyMatch(url -> url.equals(uri));
     }
 }

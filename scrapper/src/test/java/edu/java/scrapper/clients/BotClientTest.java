@@ -26,7 +26,7 @@ public class BotClientTest {
     @Test
     void shouldReturnResponseForLinkUpdateRequest() {
         String expected = "Updates received";
-        LinkUpdateRequest linkUpdateRequest = new LinkUpdateRequest(0, null, null, null);
+        LinkUpdateRequest linkUpdateRequest = new LinkUpdateRequest(0L, null, null, null);
 
         wireMockServer.stubFor(post("/updates")
             .willReturn(aResponse()
