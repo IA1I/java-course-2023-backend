@@ -5,12 +5,20 @@ app:
     force-check-delay: 10s
   github-base-url: https://api.github.com
   stackoverflow-base-url: https://api.stackexchange.com/2.3
+  bot-base-url: http://localhost:8090
 
 spring:
   jackson:
     property-naming-strategy: SNAKE_CASE
   application:
     name: scrapper
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/scrapper
+    username: postgres
+    password: postgres
+  liquibase:
+    enabled: false
 
 server:
   port: 8080
