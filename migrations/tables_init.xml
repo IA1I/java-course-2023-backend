@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress XmlUnusedNamespaceDeclaration -->
+<databaseChangeLog
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+       http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="create_table_chat" author="A1">
+        <sqlFile path="sql/create_table_chat.sql" relativeToChangelogFile="true"/>
+        <rollback>
+            <dropTable tableName="chat"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="create_table_link" author="A1">
+        <sqlFile path="sql/create_table_link.sql" relativeToChangelogFile="true"/>
+        <rollback>
+            <dropTable tableName="link"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="create_table_question" author="A1">
+        <sqlFile path="sql/create_table_question.sql" relativeToChangelogFile="true"/>
+        <rollback>
+            <dropTable tableName="question"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="create_table_tracked_link" author="A1">
+        <sqlFile path="sql/create_table_tracked_link.sql" relativeToChangelogFile="true"/>
+        <rollback>
+            <dropTable tableName="tracked_link"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
