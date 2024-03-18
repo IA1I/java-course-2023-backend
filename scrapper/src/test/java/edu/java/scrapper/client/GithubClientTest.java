@@ -29,12 +29,8 @@ public class GithubClientTest {
 
     @Test
     void shouldReturnLastUpdate() {
-<<<<<<< Updated upstream
-        Update expected = new Update(17230697424L, OffsetDateTime.parse("2024-02-23T12:00:13Z"));
-=======
         UpdateResponse expected =
             new UpdateResponse(17230697424L, OffsetDateTime.parse("2024-02-23T12:00:13Z"), "push");
->>>>>>> Stashed changes
 
         String json = readFile("src/test/resources/github/response.json");
         wireMockServer.stubFor(get("/repos/IA1I/java-course-2023-backend/activity")
