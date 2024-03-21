@@ -53,7 +53,7 @@ public class JdbcChatRepositoryTest extends IntegrationTest {
         chatDao.save(chat3);
 
         List<Chat> chats = chatDao.getAll();
-        chatDao.delete(chats.getFirst().getChatId());
+        chatDao.delete(chats.getFirst().getId());
 
         List<Chat> actual = chatDao.getAll();
         Assertions.assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
@@ -105,7 +105,7 @@ public class JdbcChatRepositoryTest extends IntegrationTest {
 
         Chat chat = chats.getFirst();
 
-        Chat actual = chatDao.get(chat.getChatId());
+        Chat actual = chatDao.get(chat.getId());
 
         Assertions.assertThat(actual).isEqualTo(expected);
     }

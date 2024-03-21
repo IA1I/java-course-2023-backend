@@ -45,7 +45,7 @@ public class JdbcTrackedLinkRepositoryTest extends IntegrationTest {
         Chat chatFromDB = chatDao.getAll().getFirst();
         Link linkFromDB = linkDao.getAll().getFirst();
 
-        trackedLinkDao.save(chatFromDB.getChatId(), linkFromDB.getLinkId());
+        trackedLinkDao.save(chatFromDB.getId(), linkFromDB.getLinkId());
 
         Integer actual = trackedLinkDao.getNumberOfLinksById(linkFromDB.getLinkId());
 
@@ -69,8 +69,8 @@ public class JdbcTrackedLinkRepositoryTest extends IntegrationTest {
         Chat chats = chatDao.getAll().getFirst();
         Link linkFromDB = linkDao.getAll().getFirst();
 
-        trackedLinkDao.save(chats.getChatId(), linkFromDB.getLinkId());
-        trackedLinkDao.delete(chats.getChatId(), linkFromDB.getLinkId());
+        trackedLinkDao.save(chats.getId(), linkFromDB.getLinkId());
+        trackedLinkDao.delete(chats.getId(), linkFromDB.getLinkId());
 
         Integer actual = trackedLinkDao.getNumberOfLinksById(linkFromDB.getLinkId());
 
@@ -102,8 +102,8 @@ public class JdbcTrackedLinkRepositoryTest extends IntegrationTest {
         linkDao.save(link2);
         List<Chat> chats = chatDao.getAll();
         Link linkFromDB = linkDao.getAll().getFirst();
-        trackedLinkDao.save(chats.get(0).getChatId(), linkFromDB.getLinkId());
-        trackedLinkDao.save(chats.get(1).getChatId(), linkFromDB.getLinkId());
+        trackedLinkDao.save(chats.get(0).getId(), linkFromDB.getLinkId());
+        trackedLinkDao.save(chats.get(1).getId(), linkFromDB.getLinkId());
 
         List<Link> actual = trackedLinkDao.getAllDistinctLinks();
         Assertions.assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
@@ -139,11 +139,11 @@ public class JdbcTrackedLinkRepositoryTest extends IntegrationTest {
         linkDao.save(link3);
         List<Chat> chats = chatDao.getAll();
         List<Link> links = linkDao.getAll();
-        trackedLinkDao.save(chats.get(0).getChatId(), links.get(0).getLinkId());
-        trackedLinkDao.save(chats.get(0).getChatId(), links.get(1).getLinkId());
-        trackedLinkDao.save(chats.get(1).getChatId(), links.get(2).getLinkId());
+        trackedLinkDao.save(chats.get(0).getId(), links.get(0).getLinkId());
+        trackedLinkDao.save(chats.get(0).getId(), links.get(1).getLinkId());
+        trackedLinkDao.save(chats.get(1).getId(), links.get(2).getLinkId());
 
-        List<Link> actual = trackedLinkDao.getAllLinksByChatId(chats.get(0).getChatId());
+        List<Link> actual = trackedLinkDao.getAllLinksByChatId(chats.get(0).getId());
 
         Assertions.assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
     }
@@ -181,10 +181,10 @@ public class JdbcTrackedLinkRepositoryTest extends IntegrationTest {
         linkDao.save(link3);
         List<Chat> chats = chatDao.getAll();
         List<Link> links = linkDao.getAll();
-        trackedLinkDao.save(chats.get(0).getChatId(), links.get(0).getLinkId());
-        trackedLinkDao.save(chats.get(1).getChatId(), links.get(0).getLinkId());
-        trackedLinkDao.save(chats.get(1).getChatId(), links.get(1).getLinkId());
-        trackedLinkDao.save(chats.get(2).getChatId(), links.get(2).getLinkId());
+        trackedLinkDao.save(chats.get(0).getId(), links.get(0).getLinkId());
+        trackedLinkDao.save(chats.get(1).getId(), links.get(0).getLinkId());
+        trackedLinkDao.save(chats.get(1).getId(), links.get(1).getLinkId());
+        trackedLinkDao.save(chats.get(2).getId(), links.get(2).getLinkId());
 
 
         List<Chat> actual = trackedLinkDao.getAllChatsByLinkId(links.get(0).getLinkId());

@@ -21,7 +21,7 @@ public class JdbcTrackedLinkRepository {
     private static final String SELECT_DISTINCT_FROM_TRACKED_LINK_LEFT_JOIN_LINK =
         "SELECT DISTINCT l.* FROM tracked_link tl LEFT JOIN link l ON tl.link_id = l.link_id";
     private static final String SELECT_FROM_TRACKED_LINK_LEFT_JOIN_CHAT_BY_LINK_ID =
-        "SELECT * FROM tracked_link tl LEFT JOIN chat c ON tl.chat_id = c.chat_id WHERE link_id = ?";
+        "SELECT * FROM tracked_link tl LEFT JOIN chat c ON tl.chat_id = c.id WHERE link_id = ?";
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired

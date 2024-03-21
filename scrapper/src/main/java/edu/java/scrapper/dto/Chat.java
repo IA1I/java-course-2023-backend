@@ -13,7 +13,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Chat {
-    private long chatId;
+    private long id;
     private long tgChatId;
 
     @Override public boolean equals(Object o) {

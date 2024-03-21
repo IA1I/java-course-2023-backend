@@ -45,7 +45,7 @@ public class JooqTrackedLinkRepositoryTest extends IntegrationTest {
         Chat chatFromDB = chatRepository.getAll().getFirst();
         Link linkFromDB = linkRepository.getAll().getFirst();
 
-        trackedLinkRepository.save(chatFromDB.getChatId(), linkFromDB.getLinkId());
+        trackedLinkRepository.save(chatFromDB.getId(), linkFromDB.getLinkId());
 
         Integer actual = trackedLinkRepository.getNumberOfLinksById(linkFromDB.getLinkId());
 
@@ -69,8 +69,8 @@ public class JooqTrackedLinkRepositoryTest extends IntegrationTest {
         Chat chats = chatRepository.getAll().getFirst();
         Link linkFromDB = linkRepository.getAll().getFirst();
 
-        trackedLinkRepository.save(chats.getChatId(), linkFromDB.getLinkId());
-        trackedLinkRepository.delete(chats.getChatId(), linkFromDB.getLinkId());
+        trackedLinkRepository.save(chats.getId(), linkFromDB.getLinkId());
+        trackedLinkRepository.delete(chats.getId(), linkFromDB.getLinkId());
 
         Integer actual = trackedLinkRepository.getNumberOfLinksById(linkFromDB.getLinkId());
 
@@ -102,8 +102,8 @@ public class JooqTrackedLinkRepositoryTest extends IntegrationTest {
         linkRepository.save(link2);
         List<Chat> chats = chatRepository.getAll();
         Link linkFromDB = linkRepository.getAll().getFirst();
-        trackedLinkRepository.save(chats.get(0).getChatId(), linkFromDB.getLinkId());
-        trackedLinkRepository.save(chats.get(1).getChatId(), linkFromDB.getLinkId());
+        trackedLinkRepository.save(chats.get(0).getId(), linkFromDB.getLinkId());
+        trackedLinkRepository.save(chats.get(1).getId(), linkFromDB.getLinkId());
 
         List<Link> actual = trackedLinkRepository.getAllDistinctLinks();
         Assertions.assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
@@ -139,11 +139,11 @@ public class JooqTrackedLinkRepositoryTest extends IntegrationTest {
         linkRepository.save(link3);
         List<Chat> chats = chatRepository.getAll();
         List<Link> links = linkRepository.getAll();
-        trackedLinkRepository.save(chats.get(0).getChatId(), links.get(0).getLinkId());
-        trackedLinkRepository.save(chats.get(0).getChatId(), links.get(1).getLinkId());
-        trackedLinkRepository.save(chats.get(1).getChatId(), links.get(2).getLinkId());
+        trackedLinkRepository.save(chats.get(0).getId(), links.get(0).getLinkId());
+        trackedLinkRepository.save(chats.get(0).getId(), links.get(1).getLinkId());
+        trackedLinkRepository.save(chats.get(1).getId(), links.get(2).getLinkId());
 
-        List<Link> actual = trackedLinkRepository.getAllLinksByChatId(chats.get(0).getChatId());
+        List<Link> actual = trackedLinkRepository.getAllLinksByChatId(chats.get(0).getId());
 
         Assertions.assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
     }
@@ -181,10 +181,10 @@ public class JooqTrackedLinkRepositoryTest extends IntegrationTest {
         linkRepository.save(link3);
         List<Chat> chats = chatRepository.getAll();
         List<Link> links = linkRepository.getAll();
-        trackedLinkRepository.save(chats.get(0).getChatId(), links.get(0).getLinkId());
-        trackedLinkRepository.save(chats.get(1).getChatId(), links.get(0).getLinkId());
-        trackedLinkRepository.save(chats.get(1).getChatId(), links.get(1).getLinkId());
-        trackedLinkRepository.save(chats.get(2).getChatId(), links.get(2).getLinkId());
+        trackedLinkRepository.save(chats.get(0).getId(), links.get(0).getLinkId());
+        trackedLinkRepository.save(chats.get(1).getId(), links.get(0).getLinkId());
+        trackedLinkRepository.save(chats.get(1).getId(), links.get(1).getLinkId());
+        trackedLinkRepository.save(chats.get(2).getId(), links.get(2).getLinkId());
 
         List<Chat> actual = trackedLinkRepository.getAllChatsByLinkId(links.get(0).getLinkId());
 

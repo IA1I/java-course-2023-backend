@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 public class ChatRowMapper implements RowMapper<Chat> {
     @Override
     public Chat mapRow(ResultSet rs, int rowNum) throws SQLException {
-        long chatId = rs.getLong("chat_id");
+        long chatId = rs.getLong("id");
         long tgChatId = rs.getLong("tg_chat_id");
 
         return new Chat(chatId, tgChatId);

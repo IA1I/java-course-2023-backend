@@ -25,7 +25,7 @@ public class ChatLocalDao implements Dao<Chat, Long> {
 
     @Override
     public void save(Chat entity) {
-        storage.put(entity.getChatId(), entity);
+        storage.put(entity.getId(), entity);
     }
 
     @Override

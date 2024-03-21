@@ -59,7 +59,7 @@ public class JooqTrackedLinkRepository {
     public List<Chat> getAllChatsByLinkId(long linkId) {
         return dslContext.select()
             .from(TRACKED_LINK)
-            .leftJoin(CHAT).on(TRACKED_LINK.CHAT_ID.eq(CHAT.CHAT_ID))
+            .leftJoin(CHAT).on(TRACKED_LINK.CHAT_ID.eq(CHAT.ID))
             .where(TRACKED_LINK.LINK_ID.eq(linkId))
             .fetchInto(Chat.class);
     }

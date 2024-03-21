@@ -67,7 +67,7 @@ public class JdbcLinkService implements LinkService {
         Link link = getLink(uri);
 
         try {
-            trackedLinkRepository.save(chat.getChatId(), link.getLinkId());
+            trackedLinkRepository.save(chat.getId(), link.getLinkId());
         } catch (DuplicateKeyException e) {
             throw new ReAddLinkException("Link is already being tracked");
         }
@@ -81,7 +81,7 @@ public class JdbcLinkService implements LinkService {
         Chat chat = getChat(tgChatId);
         Link link = getLink(uri);
 
-        trackedLinkRepository.delete(chat.getChatId(), link.getLinkId());
+        trackedLinkRepository.delete(chat.getId(), link.getLinkId());
         deleteLinks();
 
         return link;
@@ -92,7 +92,7 @@ public class JdbcLinkService implements LinkService {
     public List<Link> listAll(long tgChatId) {
         Chat chat = getChat(tgChatId);
         log.info("Get all tracked links by chat: {}", tgChatId);
-        return trackedLinkRepository.getAllLinksByChatId(chat.getChatId());
+        return trackedLinkRepository.getAllLinksByChatId(chat.getId());
     }
 
     private void saveLink(URI uri) {

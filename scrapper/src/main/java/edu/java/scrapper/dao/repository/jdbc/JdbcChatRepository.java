@@ -9,11 +9,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class JdbcChatRepository {
-    private static final String SELECT_FROM_CHAT_BY_ID = "SELECT * FROM chat WHERE chat_id = ?";
+    private static final String SELECT_FROM_CHAT_BY_ID = "SELECT * FROM chat WHERE id = ?";
     private static final String SELECT_FROM_CHAT_BY_TG_CHAT_ID = "SELECT * FROM chat WHERE tg_chat_id = ?";
     private static final String SELECT_ALL_FROM_CHAT = "SELECT * FROM chat";
     private static final String INSERT_INTO_CHAT = "INSERT INTO chat VALUES (DEFAULT, ?)";
-    private static final String DELETE_FROM_CHAT_BY_ID = "DELETE FROM chat WHERE chat_id = ?";
+    private static final String DELETE_FROM_CHAT_BY_ID = "DELETE FROM chat WHERE id = ?";
     private static final String DELETE_FROM_CHAT_BY_TG_CHAT_ID = "DELETE FROM chat WHERE tg_chat_id = ?";
     private final JdbcTemplate jdbcTemplate;
 

@@ -19,7 +19,7 @@ public class JooqChatRepository {
     public Chat get(long id) {
         return dslContext.select(CHAT.fields())
             .from(CHAT)
-            .where(CHAT.CHAT_ID.eq(id))
+            .where(CHAT.ID.eq(id))
             .fetchOneInto(Chat.class);
     }
 
@@ -44,7 +44,7 @@ public class JooqChatRepository {
 
     public void delete(long id) {
         dslContext.deleteFrom(CHAT)
-            .where(CHAT.CHAT_ID.eq(id))
+            .where(CHAT.ID.eq(id))
             .execute();
     }
 

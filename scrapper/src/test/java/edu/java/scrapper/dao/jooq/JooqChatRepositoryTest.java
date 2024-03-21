@@ -53,7 +53,7 @@ public class JooqChatRepositoryTest extends IntegrationTest {
         chatRepository.save(chat3);
 
         List<Chat> chats = chatRepository.getAll();
-        chatRepository.delete(chats.getFirst().getChatId());
+        chatRepository.delete(chats.getFirst().getId());
 
         List<Chat> actual = chatRepository.getAll();
         Assertions.assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
@@ -105,7 +105,7 @@ public class JooqChatRepositoryTest extends IntegrationTest {
 
         Chat chat = chats.getFirst();
 
-        Chat actual = chatRepository.get(chat.getChatId());
+        Chat actual = chatRepository.get(chat.getId());
 
         Assertions.assertThat(actual).isEqualTo(expected);
     }
