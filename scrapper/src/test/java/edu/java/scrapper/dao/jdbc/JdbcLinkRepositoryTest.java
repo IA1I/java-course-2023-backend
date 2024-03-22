@@ -182,7 +182,7 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
         link3.setUri(new URI("https://github.com/sanyarnd/java-course-2023-backend-template"));
         link3.setUpdatedAt(OffsetDateTime.ofInstant(Instant.ofEpochSecond(2700000000L), ZoneOffset.UTC));
         link3.setLastCheck(OffsetDateTime.ofInstant(Instant.ofEpochSecond(2700000000L), ZoneOffset.UTC));
-        System.out.println(OffsetDateTime.ofInstant(Instant.ofEpochSecond(16383960857L), ZoneOffset.UTC));
+
         List<Link> expected = List.of(link1, link2);
         linkRepository.save(link1);
         linkRepository.save(link2);

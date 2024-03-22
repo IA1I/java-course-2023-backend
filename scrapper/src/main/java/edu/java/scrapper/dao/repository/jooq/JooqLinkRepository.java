@@ -70,6 +70,7 @@ public class JooqLinkRepository {
 
     public List<Link> getLinksToCheck() {
         return dslContext.select(LINK.fields())
+            .from(LINK)
             .where(LINK.LAST_CHECK.lessThan(OffsetDateTime.now()))
             .fetchInto(Link.class);
     }
