@@ -22,11 +22,11 @@ import java.util.List;
 @SpringBootTest
 public class JdbcTrackedLinkRepositoryTest extends IntegrationTest {
     @Autowired
-    private JdbcChatRepository chatDao;
+    private JdbcChatRepository chatRepository;
     @Autowired
-    private JdbcLinkRepository linkDao;
+    private JdbcLinkRepository linkRepository;
     @Autowired
-    private JdbcTrackedLinkRepository trackedLinkDao;
+    private JdbcTrackedLinkRepository trackedLinkRepository;
 
     @Test
     @Transactional
@@ -40,14 +40,14 @@ public class JdbcTrackedLinkRepositoryTest extends IntegrationTest {
         link.setUpdatedAt(OffsetDateTime.ofInstant(Instant.ofEpochSecond(1705410153L), ZoneOffset.UTC));
         link.setLastCheck(OffsetDateTime.ofInstant(Instant.ofEpochSecond(1705410153L), ZoneOffset.UTC));
 
-        chatDao.save(chat);
-        linkDao.save(link);
-        Chat chatFromDB = chatDao.getAll().getFirst();
-        Link linkFromDB = linkDao.getAll().getFirst();
+        chatRepository.save(chat);
+        linkRepository.save(link);
+        Chat chatFromDB = chatRepository.getAll().getFirst();
+        Link linkFromDB = linkRepository.getAll().getFirst();
 
-        trackedLinkDao.save(chatFromDB.getId(), linkFromDB.getLinkId());
+        trackedLinkRepository.save(chatFromDB.getId(), linkFromDB.getLinkId());
 
-        Integer actual = trackedLinkDao.getNumberOfLinksById(linkFromDB.getLinkId());
+        Integer actual = trackedLinkRepository.getNumberOfLinksById(linkFromDB.getLinkId());
 
         Assertions.assertThat(actual).isEqualTo(expected);
     }
@@ -64,15 +64,15 @@ public class JdbcTrackedLinkRepositoryTest extends IntegrationTest {
         link.setUpdatedAt(OffsetDateTime.ofInstant(Instant.ofEpochSecond(2000000000L), ZoneOffset.UTC));
         link.setLastCheck(OffsetDateTime.ofInstant(Instant.ofEpochSecond(2000000000L), ZoneOffset.UTC));
 
-        chatDao.save(chat);
-        linkDao.save(link);
-        Chat chats = chatDao.getAll().getFirst();
-        Link linkFromDB = linkDao.getAll().getFirst();
+        chatRepository.save(chat);
+        linkRepository.save(link);
+        Chat chats = chatRepository.getAll().getFirst();
+        Link linkFromDB = linkRepository.getAll().getFirst();
 
-        trackedLinkDao.save(chats.getId(), linkFromDB.getLinkId());
-        trackedLinkDao.delete(chats.getId(), linkFromDB.getLinkId());
+        trackedLinkRepository.save(chats.getId(), linkFromDB.getLinkId());
+        trackedLinkRepository.delete(chats.getId(), linkFromDB.getLinkId());
 
-        Integer actual = trackedLinkDao.getNumberOfLinksById(linkFromDB.getLinkId());
+        Integer actual = trackedLinkRepository.getNumberOfLinksById(linkFromDB.getLinkId());
 
         Assertions.assertThat(actual).isEqualTo(expected);
     }
@@ -96,16 +96,16 @@ public class JdbcTrackedLinkRepositoryTest extends IntegrationTest {
         link2.setLastCheck(OffsetDateTime.ofInstant(Instant.ofEpochSecond(2000000000L), ZoneOffset.UTC));
         List<Link> expected = List.of(link1);
 
-        chatDao.save(chat1);
-        chatDao.save(chat2);
-        linkDao.save(link1);
-        linkDao.save(link2);
-        List<Chat> chats = chatDao.getAll();
-        Link linkFromDB = linkDao.getAll().getFirst();
-        trackedLinkDao.save(chats.get(0).getId(), linkFromDB.getLinkId());
-        trackedLinkDao.save(chats.get(1).getId(), linkFromDB.getLinkId());
+        chatRepository.save(chat1);
+        chatRepository.save(chat2);
+        linkRepository.save(link1);
+        linkRepository.save(link2);
+        List<Chat> chats = chatRepository.getAll();
+        Link linkFromDB = linkRepository.getAll().getFirst();
+        trackedLinkRepository.save(chats.get(0).getId(), linkFromDB.getLinkId());
+        trackedLinkRepository.save(chats.get(1).getId(), linkFromDB.getLinkId());
 
-        List<Link> actual = trackedLinkDao.getAllDistinctLinks();
+        List<Link> actual = trackedLinkRepository.getAllDistinctLinks();
         Assertions.assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
     }
 
@@ -132,18 +132,18 @@ public class JdbcTrackedLinkRepositoryTest extends IntegrationTest {
         link3.setLastCheck(OffsetDateTime.ofInstant(Instant.ofEpochSecond(2100000000L), ZoneOffset.UTC));
         List<Link> expected = List.of(link1, link2);
 
-        chatDao.save(chat1);
-        chatDao.save(chat2);
-        linkDao.save(link1);
-        linkDao.save(link2);
-        linkDao.save(link3);
-        List<Chat> chats = chatDao.getAll();
-        List<Link> links = linkDao.getAll();
-        trackedLinkDao.save(chats.get(0).getId(), links.get(0).getLinkId());
-        trackedLinkDao.save(chats.get(0).getId(), links.get(1).getLinkId());
-        trackedLinkDao.save(chats.get(1).getId(), links.get(2).getLinkId());
+        chatRepository.save(chat1);
+        chatRepository.save(chat2);
+        linkRepository.save(link1);
+        linkRepository.save(link2);
+        linkRepository.save(link3);
+        List<Chat> chats = chatRepository.getAll();
+        List<Link> links = linkRepository.getAll();
+        trackedLinkRepository.save(chats.get(0).getId(), links.get(0).getLinkId());
+        trackedLinkRepository.save(chats.get(0).getId(), links.get(1).getLinkId());
+        trackedLinkRepository.save(chats.get(1).getId(), links.get(2).getLinkId());
 
-        List<Link> actual = trackedLinkDao.getAllLinksByChatId(chats.get(0).getId());
+        List<Link> actual = trackedLinkRepository.getAllLinksByChatId(chats.get(0).getId());
 
         Assertions.assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
     }
@@ -173,21 +173,21 @@ public class JdbcTrackedLinkRepositoryTest extends IntegrationTest {
         link3.setLastCheck(OffsetDateTime.ofInstant(Instant.ofEpochSecond(2100000000L), ZoneOffset.UTC));
         List<Chat> expected = List.of(chat1, chat2);
 
-        chatDao.save(chat1);
-        chatDao.save(chat2);
-        chatDao.save(chat3);
-        linkDao.save(link1);
-        linkDao.save(link2);
-        linkDao.save(link3);
-        List<Chat> chats = chatDao.getAll();
-        List<Link> links = linkDao.getAll();
-        trackedLinkDao.save(chats.get(0).getId(), links.get(0).getLinkId());
-        trackedLinkDao.save(chats.get(1).getId(), links.get(0).getLinkId());
-        trackedLinkDao.save(chats.get(1).getId(), links.get(1).getLinkId());
-        trackedLinkDao.save(chats.get(2).getId(), links.get(2).getLinkId());
+        chatRepository.save(chat1);
+        chatRepository.save(chat2);
+        chatRepository.save(chat3);
+        linkRepository.save(link1);
+        linkRepository.save(link2);
+        linkRepository.save(link3);
+        List<Chat> chats = chatRepository.getAll();
+        List<Link> links = linkRepository.getAll();
+        trackedLinkRepository.save(chats.get(0).getId(), links.get(0).getLinkId());
+        trackedLinkRepository.save(chats.get(1).getId(), links.get(0).getLinkId());
+        trackedLinkRepository.save(chats.get(1).getId(), links.get(1).getLinkId());
+        trackedLinkRepository.save(chats.get(2).getId(), links.get(2).getLinkId());
 
 
-        List<Chat> actual = trackedLinkDao.getAllChatsByLinkId(links.get(0).getLinkId());
+        List<Chat> actual = trackedLinkRepository.getAllChatsByLinkId(links.get(0).getLinkId());
 
         Assertions.assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
     }

@@ -14,6 +14,8 @@ public class JdbcLinkRepository {
     private static final String SELECT_FROM_LINK_BY_URI = "SELECT * FROM link WHERE uri = ?";
     private static final String SELECT_ALL_FROM_LINK = "SELECT * FROM link";
     private static final String INSERT_INTO_LINK = "INSERT INTO link VALUES (DEFAULT, ?, ?, ?)";
+    private static final String UPDATE_LINK_FIELDS_UPDATED_AT_AND_LAST_CHECK =
+        "UPDATE link SET updated_at = ?, last_check = ? WHERE link_id = ?";
     private static final String DELETE_FROM_LINK_BY_ID = "DELETE FROM link WHERE link_id = ?";
     private static final String SELECT_EXISTS = "SELECT exists (SELECT TRUE FROM link WHERE uri = ?)";
     private static final String SELECT_FROM_LINK_TO_CHECK =
@@ -48,7 +50,7 @@ public class JdbcLinkRepository {
 
     public void update(Link entity) {
         jdbcTemplate.update(
-            "UPDATE link SET updated_at = ?, last_check = ? WHERE link_id = ?",
+            UPDATE_LINK_FIELDS_UPDATED_AT_AND_LAST_CHECK,
             entity.getUpdatedAt(),
             entity.getLastCheck(),
             entity.getLinkId()

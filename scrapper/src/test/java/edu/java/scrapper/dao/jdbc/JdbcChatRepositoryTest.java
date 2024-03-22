@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 public class JdbcChatRepositoryTest extends IntegrationTest {
     @Autowired
-    private JdbcChatRepository chatDao;
+    private JdbcChatRepository chatRepository;
 
     @Test
     @Transactional
@@ -28,11 +28,11 @@ public class JdbcChatRepositoryTest extends IntegrationTest {
         chat3.setTgChatId(3L);
         List<Chat> expected = List.of(chat1, chat2, chat3);
 
-        chatDao.save(chat1);
-        chatDao.save(chat2);
-        chatDao.save(chat3);
+        chatRepository.save(chat1);
+        chatRepository.save(chat2);
+        chatRepository.save(chat3);
 
-        List<Chat> actual = chatDao.getAll();
+        List<Chat> actual = chatRepository.getAll();
 
         Assertions.assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
     }
@@ -48,14 +48,14 @@ public class JdbcChatRepositoryTest extends IntegrationTest {
         chat2.setTgChatId(5L);
         chat3.setTgChatId(6L);
         List<Chat> expected = List.of(chat2, chat3);
-        chatDao.save(chat1);
-        chatDao.save(chat2);
-        chatDao.save(chat3);
+        chatRepository.save(chat1);
+        chatRepository.save(chat2);
+        chatRepository.save(chat3);
 
-        List<Chat> chats = chatDao.getAll();
-        chatDao.delete(chats.getFirst().getId());
+        List<Chat> chats = chatRepository.getAll();
+        chatRepository.delete(chats.getFirst().getId());
 
-        List<Chat> actual = chatDao.getAll();
+        List<Chat> actual = chatRepository.getAll();
         Assertions.assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
     }
 
@@ -70,13 +70,13 @@ public class JdbcChatRepositoryTest extends IntegrationTest {
         chat2.setTgChatId(8L);
         chat3.setTgChatId(9L);
         List<Chat> expected = List.of(chat1, chat3);
-        chatDao.save(chat1);
-        chatDao.save(chat2);
-        chatDao.save(chat3);
+        chatRepository.save(chat1);
+        chatRepository.save(chat2);
+        chatRepository.save(chat3);
 
-        chatDao.deleteByTgChatId(8L);
+        chatRepository.deleteByTgChatId(8L);
 
-        List<Chat> actual = chatDao.getAll();
+        List<Chat> actual = chatRepository.getAll();
         Assertions.assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
     }
 
@@ -86,8 +86,8 @@ public class JdbcChatRepositoryTest extends IntegrationTest {
     void shouldSaveChat(){
         Chat expected = new Chat();
         expected.setTgChatId(10L);
-        chatDao.save(expected);
-        List<Chat> chats = chatDao.getAll();
+        chatRepository.save(expected);
+        List<Chat> chats = chatRepository.getAll();
 
         Chat actual = chats.getFirst();
 
@@ -100,12 +100,12 @@ public class JdbcChatRepositoryTest extends IntegrationTest {
     void shouldGetChatById(){
         Chat expected = new Chat();
         expected.setTgChatId(11L);
-        chatDao.save(expected);
-        List<Chat> chats = chatDao.getAll();
+        chatRepository.save(expected);
+        List<Chat> chats = chatRepository.getAll();
 
         Chat chat = chats.getFirst();
 
-        Chat actual = chatDao.get(chat.getId());
+        Chat actual = chatRepository.get(chat.getId());
 
         Assertions.assertThat(actual).isEqualTo(expected);
     }
@@ -116,9 +116,9 @@ public class JdbcChatRepositoryTest extends IntegrationTest {
     void shouldGetChatByTgChatId(){
         Chat expected = new Chat();
         expected.setTgChatId(12L);
-        chatDao.save(expected);
+        chatRepository.save(expected);
 
-        Chat actual = chatDao.getByTgChatId(12L);
+        Chat actual = chatRepository.getByTgChatId(12L);
 
         Assertions.assertThat(actual).isEqualTo(expected);
     }
