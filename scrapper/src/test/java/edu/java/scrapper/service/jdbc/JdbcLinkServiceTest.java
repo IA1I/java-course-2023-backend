@@ -2,7 +2,10 @@ package edu.java.scrapper.service.jdbc;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import edu.java.scrapper.IntegrationTest;
+import edu.java.scrapper.dao.repository.jdbc.JdbcLinkRepository;
+import edu.java.scrapper.dao.repository.jdbc.JdbcQuestionRepository;
 import edu.java.scrapper.dto.Link;
+import edu.java.scrapper.dto.Question;
 import edu.java.scrapper.exception.ChatIsNotRegisteredException;
 import edu.java.scrapper.exception.LinkIsNotTrackedException;
 import edu.java.scrapper.exception.ReAddLinkException;
@@ -34,6 +37,10 @@ public class JdbcLinkServiceTest extends IntegrationTest {
     @Autowired
     @Qualifier("jdbcLinkService")
     private LinkService linkService;
+    @Autowired
+    private JdbcLinkRepository linkRepository;
+    @Autowired
+    private JdbcQuestionRepository questionRepository;
 
     static WireMockServer wireMockServer;
 
@@ -237,6 +244,42 @@ public class JdbcLinkServiceTest extends IntegrationTest {
         List<Link> actual = linkService.listAll(1L);
 
         assertThat(actual).extracting(Link::getUri).containsExactlyInAnyOrderElementsOf(expected);
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void shouldSaveLinkAndQuestion() throws URISyntaxException {
+        Question expected = new Question();
+        expected.setCommentsCount(0);
+        expected.setAnswersCount(26);
+
+        String json = readFile("src/test/resources/stackoverflow/response.json");
+        wireMockServer.stubFor(get("/questions/1642028?site=stackoverflow")
+            .willReturn(
+                aResponse()
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(json)
+            )
+        );
+        json = readFile("src/test/resources/stackoverflow/comments_response_1642028.json");
+        wireMockServer.stubFor(get("/questions/1642028/comments?site=stackoverflow")
+            .willReturn(
+                aResponse()
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(json)
+            )
+        );
+
+        chatService.register(1L);
+        linkService.add(1L, new URI("https://stackoverflow.com/questions/1642028/what-is-the-operator-in-c-c"));
+        Link link =
+            linkRepository.getByURI(new URI("https://stackoverflow.com/questions/1642028/what-is-the-operator-in-c-c"));
+        expected.setLinkId(link.getLinkId());
+
+        Question actual = questionRepository.get(link.getLinkId());
+
+        assertThat(actual).isEqualTo(expected);
     }
 
     @AfterAll

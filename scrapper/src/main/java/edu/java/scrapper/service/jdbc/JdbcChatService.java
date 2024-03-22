@@ -51,12 +51,14 @@ public class JdbcChatService implements ChatService {
     @Transactional
     public void unregister(long tgChatId) {
         chatRepository.deleteByTgChatId(tgChatId);
+        log.info("Delete chat: {} from DB", tgChatId);
         List<Link> links = linkRepository.getAll();
         List<Link> trackedLinks = trackedLinkRepository.getAllDistinctLinks();
         links.removeAll(trackedLinks);
 
         for (Link link : links) {
             linkRepository.delete(link.getLinkId());
+            log.info("Delete link: {} from DB", link.getUri());
         }
     }
 }
