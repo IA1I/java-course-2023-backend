@@ -7,6 +7,8 @@ spring:
     name: bot
   jackson:
     time-zone: UTC
+  liquibase:
+    enabled: false
 
 server:
   port: 8090
