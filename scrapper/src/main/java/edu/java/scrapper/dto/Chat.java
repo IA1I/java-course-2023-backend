@@ -32,4 +32,3 @@ public class Chat {
         return Objects.hash(tgChatId);
     }
 }
-
