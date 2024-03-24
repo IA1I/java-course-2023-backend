@@ -13,7 +13,7 @@ public class UpdateControllerTest {
     @Test
     void shouldReturnOkResponseEntity() {
         ResponseEntity<String> expected = new ResponseEntity<>("Updates received", HttpStatus.OK);
-        LinkUpdateRequest linkUpdateRequest = new LinkUpdateRequest(0, null, null, null);
+        LinkUpdateRequest linkUpdateRequest = new LinkUpdateRequest(0L, null, null, null);
 
         ResponseEntity<String> actual = updateController.newUpdate(linkUpdateRequest);
 
