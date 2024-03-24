@@ -11,7 +11,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
-@SpringBootTest
+@SpringBootTest(properties = "app.access-type=jooq")
 public class JooqChatRepositoryTest extends IntegrationTest {
     @Autowired
     private JooqChatRepository chatRepository;

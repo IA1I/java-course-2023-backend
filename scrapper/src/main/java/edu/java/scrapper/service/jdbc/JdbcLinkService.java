@@ -21,13 +21,10 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 @Log4j2
 public class JdbcLinkService implements LinkService {
     private static final long HOURS_TO_MINUS = 4L;
@@ -38,7 +35,6 @@ public class JdbcLinkService implements LinkService {
     private final GithubClient githubClient;
     private final StackOverflowClient stackOverflowClient;
 
-    @Autowired
     public JdbcLinkService(
         JdbcChatRepository chatRepository,
         JdbcLinkRepository linkRepository,

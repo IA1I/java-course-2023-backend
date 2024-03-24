@@ -16,7 +16,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
-@SpringBootTest
+@SpringBootTest(properties = "app.access-type=jooq")
 public class JooqLinkRepositoryTest extends IntegrationTest {
     @Autowired
     private JooqLinkRepository linkRepository;

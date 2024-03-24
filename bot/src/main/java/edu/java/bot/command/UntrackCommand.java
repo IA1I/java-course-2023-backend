@@ -2,19 +2,24 @@ package edu.java.bot.command;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.dao.Dao;
-import edu.java.bot.dto.User;
+import edu.java.bot.client.scrapper.LinkClient;
+import edu.java.bot.dto.request.RemoveLinkRequest;
+import edu.java.bot.dto.response.LinkResponse;
 import edu.java.bot.processor.UserMessageProcessor;
-import io.mola.galimatias.GalimatiasParseException;
-import io.mola.galimatias.URL;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 @Log4j2
 @Component
 public class UntrackCommand extends AbstractCommand {
-    public UntrackCommand(UserMessageProcessor processor, Dao<User, Long> userDao) {
-        super(processor, userDao);
+    private final LinkClient linkClient;
+
+    @Autowired
+    public UntrackCommand(UserMessageProcessor processor, LinkClient linkClient) {
+        super(processor);
+        this.linkClient = linkClient;
     }
 
     @Override
@@ -36,10 +41,6 @@ public class UntrackCommand extends AbstractCommand {
 
     private String getText(Update update) {
         long id = update.message().from().id();
-        if (!isRegistered(id)) {
-            log.info("Created text with not registered user for: /untrack");
-            return "You are not registered";
-        }
         String[] links = update.message().text().split(" ");
         if (links.length == 1) {
             log.info("Created text with instruction for: /untrack");
@@ -58,25 +59,27 @@ public class UntrackCommand extends AbstractCommand {
             text.append(links[i])
                 .append(" - ");
 
-            processLink(id, text, links[i]);
+            Mono<LinkResponse> linkResponseMono = linkClient.untrackLink(id, new RemoveLinkRequest(links[i]));
+            LinkResponse response = linkResponseMono.block();
+            text.append("untracked");
             text.append(LINE_SEPARATOR);
         }
 
         return text.toString();
     }
 
-    private void processLink(long id, StringBuilder text, String link) {
-        try {
-            URL url = URL.parse(link);
-            User user = userDao.get(id);
-            if (user.contains(url)) {
-                log.info("Removed url: {} for user: {}", url, id);
-                user.removeUrl(url);
-            }
-            text.append("untracked");
-        } catch (GalimatiasParseException e) {
-            log.info("Invalid URL: {} for user: {}", link, id);
-            text.append("invalid URL");
-        }
-    }
+//    private void processLink(long id, StringBuilder text, String link) {
+//        try {
+//            URL url = URL.parse(link);
+//            User user = userDao.get(id);
+//            if (user.contains(url)) {
+//                log.info("Removed url: {} for user: {}", url, id);
+//                user.removeUrl(url);
+//            }
+//            text.append("untracked");
+//        } catch (GalimatiasParseException e) {
+//            log.info("Invalid URL: {} for user: {}", link, id);
+//            text.append("invalid URL");
+//        }
+//    }
 }

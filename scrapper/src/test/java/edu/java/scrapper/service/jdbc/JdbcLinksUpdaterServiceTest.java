@@ -23,16 +23,13 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static edu.java.scrapper.TestUtils.readFile;
 
-@SpringBootTest
+@SpringBootTest(properties = "app.access-type=jdbc")
 public class JdbcLinksUpdaterServiceTest extends IntegrationTest {
     @Autowired
-    @Qualifier("jdbcLinksUpdaterService")
     private LinkUpdater linkUpdater;
     @Autowired
-    @Qualifier("jdbcLinkService")
     private LinkService linkService;
     @Autowired
-    @Qualifier("jdbcChatService")
     private ChatService chatService;
 
     static WireMockServer wireMockServer;

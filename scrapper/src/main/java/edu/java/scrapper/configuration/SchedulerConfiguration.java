@@ -2,7 +2,6 @@ package edu.java.scrapper.configuration;
 
 import edu.java.scrapper.scheduler.LinkUpdateScheduler;
 import edu.java.scrapper.service.LinkUpdater;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class SchedulerConfiguration {
 
     @Bean
-    public LinkUpdateScheduler linkUpdateScheduler(@Qualifier("jdbcLinksUpdaterService") LinkUpdater linkUpdater) {
+    public LinkUpdateScheduler linkUpdateScheduler(LinkUpdater linkUpdater) {
         return new LinkUpdateScheduler(linkUpdater);
     }
 }

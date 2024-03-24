@@ -23,11 +23,8 @@ import java.time.ZoneId;
 import java.util.List;
 import java.util.function.Predicate;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 @Log4j2
 public class JdbcLinksUpdaterService implements LinkUpdater {
     private static final long CHECK_TIME = 3L;
@@ -38,7 +35,6 @@ public class JdbcLinksUpdaterService implements LinkUpdater {
     private final StackOverflowClient stackOverflowClient;
     private final BotClient botClient;
 
-    @Autowired
     public JdbcLinksUpdaterService(
         JdbcLinkRepository linkRepository,
         JdbcTrackedLinkRepository trackedLinkRepository,
@@ -99,6 +95,8 @@ public class JdbcLinksUpdaterService implements LinkUpdater {
                 updateInfo.setDescription(stringBuilder.toString());
 
                 link.setUpdatedAt(itemResponse.lastActivityDate());
+                question.setCommentsCount(commentResponse.getCommentsCount());
+                question.setAnswersCount(itemResponse.answerCount());
             }
             if (updateInfo.getUpdatedAt().isAfter(link.getLastCheck())) {
                 LinkUpdateRequest linkUpdateRequest = getLinkUpdateRequest(link, updateInfo);

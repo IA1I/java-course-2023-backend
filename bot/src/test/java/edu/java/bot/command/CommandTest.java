@@ -16,14 +16,14 @@ public class CommandTest {
 
     @Test
     void shouldReturnFalseForNullUpdate() {
-        Command command = new HelpCommand(null, null);
+        Command command = new HelpCommand(null);
 
         Assertions.assertThat(command.supports(null)).isFalse();
     }
 
     @Test
     void shouldReturnFalseForUpdateWithNullMessage() {
-        Command command = new HelpCommand(null, null);
+        Command command = new HelpCommand(null);
         Update update = new Update();
 
         Assertions.assertThat(command.supports(update)).isFalse();
@@ -31,7 +31,7 @@ public class CommandTest {
 
     @Test
     void shouldReturnFalseForUpdateWithMessageWithNullText() {
-        Command command = new HelpCommand(null, null);
+        Command command = new HelpCommand(null);
         Update updateMock = Mockito.mock(Update.class);
         Message message = new Message();
         Mockito.when(updateMock.message()).thenReturn(message);
@@ -41,7 +41,7 @@ public class CommandTest {
 
     @Test
     void shouldReturnTrueForTextStartsWithHelp() {
-        Command command = new HelpCommand(null, null);
+        Command command = new HelpCommand(null);
         Update updateMock = Mockito.mock(Update.class);
         Message messageMock = Mockito.mock(Message.class);
         Mockito.when(updateMock.message()).thenReturn(messageMock);
@@ -64,7 +64,7 @@ public class CommandTest {
 
     static Stream<Arguments> testCasesForTestCommandName() {
         return Stream.of(
-            Arguments.of(new HelpCommand(null, null), "/help"),
+            Arguments.of(new HelpCommand(null), "/help"),
             Arguments.of(new ListCommand(null, null), "/list"),
             Arguments.of(new StartCommand(null, null), "/start"),
             Arguments.of(new TrackCommand(null, null), "/track"),
@@ -86,7 +86,7 @@ public class CommandTest {
 
     static Stream<Arguments> testCasesForTestCommandDescription() {
         return Stream.of(
-            Arguments.of(new HelpCommand(null, null), "Display command window"),
+            Arguments.of(new HelpCommand(null), "Display command window"),
             Arguments.of(new ListCommand(null, null), "Show list of tracked links"),
             Arguments.of(new StartCommand(null, null), "Register a user"),
             Arguments.of(new TrackCommand(null, null), "Start tracking link"),

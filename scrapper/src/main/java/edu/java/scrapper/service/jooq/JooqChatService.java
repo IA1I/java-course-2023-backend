@@ -9,19 +9,15 @@ import edu.java.scrapper.exception.ReRegistrationException;
 import edu.java.scrapper.service.ChatService;
 import java.util.List;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 @Log4j2
 public class JooqChatService implements ChatService {
     private final JooqChatRepository chatRepository;
     private final JooqLinkRepository linkRepository;
     private final JooqTrackedLinkRepository trackedLinkRepository;
 
-    @Autowired
     public JooqChatService(
         JooqChatRepository chatRepository,
         JooqLinkRepository linkRepository,
@@ -51,6 +47,7 @@ public class JooqChatService implements ChatService {
     @Transactional
     public void unregister(long tgChatId) {
         chatRepository.deleteByTgChatId(tgChatId);
+        log.info("Delete chat: {} from DB", tgChatId);
 
         List<Link> links = linkRepository.getAll();
         List<Link> trackedLinks = trackedLinkRepository.getAllDistinctLinks();
@@ -58,6 +55,7 @@ public class JooqChatService implements ChatService {
 
         for (Link link : links) {
             linkRepository.delete(link.getLinkId());
+            log.info("Delete link: {} from DB", link.getUri());
         }
     }
 }

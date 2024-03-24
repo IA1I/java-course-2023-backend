@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@SpringBootTest
+@SpringBootTest(properties = "app.access-type=jdbc")
 public class MigrationTest extends IntegrationTest {
     @Autowired
     private JdbcClient jdbcClient;

@@ -2,8 +2,6 @@ package edu.java.bot.command;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.dao.Dao;
-import edu.java.bot.dto.User;
 import edu.java.bot.processor.UserMessageProcessor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
@@ -11,8 +9,8 @@ import org.springframework.stereotype.Component;
 @Log4j2
 @Component
 public class HelpCommand extends AbstractCommand {
-    public HelpCommand(UserMessageProcessor processor, Dao<User, Long> userDao) {
-        super(processor, userDao);
+    public HelpCommand(UserMessageProcessor processor) {
+        super(processor);
     }
 
     @Override

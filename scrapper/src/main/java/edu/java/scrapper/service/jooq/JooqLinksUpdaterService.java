@@ -23,10 +23,8 @@ import java.time.ZoneId;
 import java.util.List;
 import java.util.function.Predicate;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 @Log4j2
 public class JooqLinksUpdaterService implements LinkUpdater {
     private static final long CHECK_TIME = 3L;
@@ -97,6 +95,8 @@ public class JooqLinksUpdaterService implements LinkUpdater {
                 updateInfo.setDescription(stringBuilder.toString());
 
                 link.setUpdatedAt(itemResponse.lastActivityDate());
+                question.setCommentsCount(commentResponse.getCommentsCount());
+                question.setAnswersCount(itemResponse.answerCount());
             }
             if (updateInfo.getUpdatedAt().isAfter(link.getLastCheck())) {
                 LinkUpdateRequest linkUpdateRequest = getLinkUpdateRequest(link, updateInfo);

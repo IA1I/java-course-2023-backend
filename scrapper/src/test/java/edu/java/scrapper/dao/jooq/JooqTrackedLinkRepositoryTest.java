@@ -19,7 +19,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
-@SpringBootTest
+@SpringBootTest(properties = "app.access-type=jooq")
 public class JooqTrackedLinkRepositoryTest extends IntegrationTest {
     @Autowired
     private JooqChatRepository chatRepository;

@@ -7,10 +7,13 @@ import edu.java.scrapper.dao.repository.jdbc.JdbcLinkRepository;
 import edu.java.scrapper.dao.repository.jdbc.JdbcQuestionRepository;
 import edu.java.scrapper.dto.Chat;
 import edu.java.scrapper.dto.Link;
-import edu.java.scrapper.dto.Question;
+import edu.java.scrapper.exception.ChatIsNotRegisteredException;
 import edu.java.scrapper.exception.ReRegistrationException;
 import edu.java.scrapper.service.ChatService;
 import edu.java.scrapper.service.LinkService;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,22 +25,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static edu.java.scrapper.TestUtils.readFile;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
+@SpringBootTest(properties = "app.access-type=jdbc")
 public class JdbcChatServiceTest extends IntegrationTest {
     @Autowired
-    @Qualifier("jdbcChatService")
     private ChatService chatService;
     @Autowired
-    @Qualifier("jdbcLinkService")
     private LinkService linkService;
     @Autowired
     private JdbcChatRepository chatRepository;
@@ -214,6 +211,13 @@ public class JdbcChatServiceTest extends IntegrationTest {
 
         Assertions.assertThat(actualLinks).extracting(Link::getUri).isEqualTo(expected);
         assertThrows(EmptyResultDataAccessException.class, () -> questionRepository.get(link.getLinkId()));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void shouldThrowChatIsNotRegisteredExceptionForDeletingUnregisterChat() {
+        assertThrows(ChatIsNotRegisteredException.class, () -> chatService.unregister(1L));
     }
 
     @AfterAll

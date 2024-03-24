@@ -2,19 +2,24 @@ package edu.java.bot.command;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.dao.Dao;
-import edu.java.bot.dto.User;
+import edu.java.bot.client.scrapper.LinkClient;
+import edu.java.bot.dto.response.LinkResponse;
+import edu.java.bot.dto.response.ListLinksResponse;
 import edu.java.bot.processor.UserMessageProcessor;
-import io.mola.galimatias.URL;
-import java.util.List;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 @Log4j2
 @Component
 public class ListCommand extends AbstractCommand {
-    public ListCommand(UserMessageProcessor processor, Dao<User, Long> userDao) {
-        super(processor, userDao);
+    private final LinkClient linkClient;
+
+    @Autowired
+    public ListCommand(UserMessageProcessor processor, LinkClient linkClient) {
+        super(processor);
+        this.linkClient = linkClient;
     }
 
     @Override
@@ -30,30 +35,17 @@ public class ListCommand extends AbstractCommand {
     @Override
     public SendMessage handle(Update update) {
         long chatId = update.message().chat().id();
-
-        return new SendMessage(chatId, getText(update));
-    }
-
-    private String getText(Update update) {
-        long id = update.message().from().id();
-        if (!isRegistered(id)) {
-            log.info("Created text with not registered user for: /list");
-            return "You are not registered";
+        Mono<ListLinksResponse> responseMono = linkClient.getAllLinks(chatId);
+        ListLinksResponse links = responseMono.block();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (LinkResponse link : links.links()) {
+            stringBuilder.append(link.url())
+                .append(" ")
+                .append("updated")
+                .append(LINE_SEPARATOR);
         }
 
-        List<URL> urls = userDao.get(id).getUrls();
-        if (urls.isEmpty()) {
-            log.info("Created text with empty tracked links for: /list");
-            return "You are not tracking links";
-        } else {
-            StringBuilder text = new StringBuilder();
-            for (URL url : urls) {
-                text.append(url)
-                    .append(LINE_SEPARATOR);
-            }
-
-            log.info("Created text with tracked links for: /list");
-            return text.toString();
-        }
+        return new SendMessage(chatId, stringBuilder.toString());
     }
+
 }

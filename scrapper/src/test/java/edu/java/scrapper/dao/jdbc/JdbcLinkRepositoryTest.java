@@ -16,7 +16,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
-@SpringBootTest
+@SpringBootTest(properties = "app.access-type=jdbc")
 public class JdbcLinkRepositoryTest extends IntegrationTest {
     @Autowired
     private JdbcLinkRepository linkRepository;

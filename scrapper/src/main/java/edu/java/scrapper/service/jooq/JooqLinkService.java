@@ -23,10 +23,8 @@ import java.time.ZoneId;
 import java.util.List;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 @Log4j2
 public class JooqLinkService implements LinkService {
     private static final long HOURS_TO_MINUS = 4L;

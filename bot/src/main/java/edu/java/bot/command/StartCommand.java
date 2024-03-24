@@ -2,17 +2,22 @@ package edu.java.bot.command;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.dao.Dao;
-import edu.java.bot.dto.User;
+import edu.java.bot.client.scrapper.ChatClient;
 import edu.java.bot.processor.UserMessageProcessor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 @Log4j2
 @Component
 public class StartCommand extends AbstractCommand {
-    public StartCommand(UserMessageProcessor processor, Dao<User, Long> userDao) {
-        super(processor, userDao);
+    private final ChatClient chatClient;
+
+    @Autowired
+    public StartCommand(UserMessageProcessor processor, ChatClient chatClient) {
+        super(processor);
+        this.chatClient = chatClient;
     }
 
     @Override
@@ -27,10 +32,17 @@ public class StartCommand extends AbstractCommand {
 
     @Override
     public SendMessage handle(Update update) {
-        saveUser(update);
         long chatId = update.message().chat().id();
+        Mono<String> responseMono = chatClient.registerChat(chatId);
+        String response = "";
+        try{
+            response = responseMono.block();
+        } catch (Exception e){
 
-        return new SendMessage(chatId, getText(update));
+        }
+
+
+        return new SendMessage(chatId, response);
     }
 
     private String getText(Update update) {
@@ -42,13 +54,5 @@ public class StartCommand extends AbstractCommand {
 
         log.info("Created text with successful registration for: /start");
         return text.toString();
-    }
-
-    private void saveUser(Update update) {
-        long id = update.message().from().id();
-        User user = new User(id);
-        userDao.save(user);
-
-        log.info("Saved user {}", id);
     }
 }

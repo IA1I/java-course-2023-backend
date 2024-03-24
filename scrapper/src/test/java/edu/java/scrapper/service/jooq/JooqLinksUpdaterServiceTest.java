@@ -21,16 +21,13 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static edu.java.scrapper.TestUtils.readFile;
 
-@SpringBootTest
+@SpringBootTest(properties = "app.access-type=jooq")
 public class JooqLinksUpdaterServiceTest extends IntegrationTest {
     @Autowired
-    @Qualifier("jooqLinksUpdaterService")
     private LinkUpdater linkUpdater;
     @Autowired
-    @Qualifier("jooqLinkService")
     private LinkService linkService;
     @Autowired
-    @Qualifier("jooqChatService")
     private ChatService chatService;
 
     static WireMockServer wireMockServer;

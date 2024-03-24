@@ -1,5 +1,6 @@
 package edu.java.scrapper.configuration;
 
+import edu.java.scrapper.utils.AccessType;
 import jakarta.validation.constraints.NotNull;
 import java.time.Duration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -15,7 +16,9 @@ public record ApplicationConfig(
     @NotNull
     String stackOverflowBaseUrl,
     @NotNull
-    String botBaseUrl
+    String botBaseUrl,
+    @NotNull
+    AccessType accessType
 ) {
     public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
     }

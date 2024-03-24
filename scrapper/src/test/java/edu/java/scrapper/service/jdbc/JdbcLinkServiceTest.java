@@ -29,13 +29,11 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static edu.java.scrapper.TestUtils.readFile;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@SpringBootTest(properties = "app.access-type=jdbc")
 public class JdbcLinkServiceTest extends IntegrationTest {
     @Autowired
-    @Qualifier("jdbcChatService")
     private ChatService chatService;
     @Autowired
-    @Qualifier("jdbcLinkService")
     private LinkService linkService;
     @Autowired
     private JdbcLinkRepository linkRepository;
