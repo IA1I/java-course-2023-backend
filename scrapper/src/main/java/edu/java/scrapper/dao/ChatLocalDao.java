@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//@Repository
 public class ChatLocalDao implements Dao<Chat, Long> {
     private final Map<Long, Chat> storage;
 

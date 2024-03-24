@@ -35,9 +35,9 @@ public class StartCommand extends AbstractCommand {
         long chatId = update.message().chat().id();
         Mono<String> responseMono = chatClient.registerChat(chatId);
         String response = "";
-        try{
+        try {
             response = responseMono.block();
-        } catch (Exception e){
+        } catch (Exception e) {
 
         }
 
@@ -48,9 +48,9 @@ public class StartCommand extends AbstractCommand {
     private String getText(Update update) {
         StringBuilder text = new StringBuilder();
         text.append("Hello, ")
-            .append(update.message().from().firstName())
-            .append(LINE_SEPARATOR)
-            .append("You are registered!");
+                .append(update.message().from().firstName())
+                .append(LINE_SEPARATOR)
+                .append("You are registered!");
 
         log.info("Created text with successful registration for: /start");
         return text.toString();

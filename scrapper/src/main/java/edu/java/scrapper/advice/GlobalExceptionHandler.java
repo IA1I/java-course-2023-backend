@@ -15,17 +15,24 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    private static final String DESCRIPTION = "Invalid request parameters";
+    private static final String SOMETHING_WENT_WRONG = "Something went wrong";
+    private static final String INVALID_REQUEST_PARAMETERS = "Invalid request parameters";
     private static final String RE_REGISTRATION = "Chat re-registration";
     private static final String NOT_REGISTERED = "Chat is not registered";
     private static final String RE_ADDING_LINK = "Re-adding link";
     private static final String LINK_IS_NOT_TRACKED = "Link is not tracked";
 
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception.class)
+    public ApiErrorResponse handleException(Exception exception) {
+        return getApiErrorResponse(exception, HttpStatus.INTERNAL_SERVER_ERROR, SOMETHING_WENT_WRONG);
+    }
+
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler({HttpMessageNotReadableException.class, MethodArgumentTypeMismatchException.class,
         MissingRequestHeaderException.class})
     public ApiErrorResponse handleMessageException(Exception exception) {
-        return getApiErrorResponse(exception, HttpStatus.BAD_REQUEST, DESCRIPTION);
+        return getApiErrorResponse(exception, HttpStatus.BAD_REQUEST, INVALID_REQUEST_PARAMETERS);
     }
 
     @ResponseStatus(value = HttpStatus.CONFLICT)
