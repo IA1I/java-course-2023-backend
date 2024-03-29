@@ -21,6 +21,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static edu.java.scrapper.TestUtils.readFile;
 
 @SpringBootTest(properties = "app.access-type=jdbc")
@@ -129,6 +130,13 @@ public class JdbcLinksUpdaterServiceTest extends IntegrationTest {
                 aResponse()
                     .withHeader("Content-Type", "application/json")
                     .withBody(json)
+            )
+        );
+        wireMockServer.stubFor(post("/updates")
+            .willReturn(
+                aResponse()
+                    .withHeader("Content-Type", "application/json")
+                    .withBody("json")
             )
         );
 

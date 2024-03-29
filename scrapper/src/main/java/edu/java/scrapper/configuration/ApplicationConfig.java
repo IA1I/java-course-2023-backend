@@ -18,7 +18,9 @@ public record ApplicationConfig(
     @NotNull
     String botBaseUrl,
     @NotNull
-    AccessType accessType
+    AccessType accessType,
+    @NotNull
+    String githubToken
 ) {
     public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
     }

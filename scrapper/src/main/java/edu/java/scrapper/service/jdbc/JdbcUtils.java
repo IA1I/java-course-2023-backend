@@ -41,9 +41,9 @@ public final class JdbcUtils {
     public static CommentResponse getCommentResponse(URI uri, StackOverflowClient stackOverflowClient) {
         String questionId = getQuestionId(uri);
 
-        Mono<CommentResponse> questionActivity = stackOverflowClient.getQuestionComments(questionId);
+        Mono<CommentResponse> commentResponse = stackOverflowClient.getQuestionComments(questionId);
 
-        return questionActivity.block();
+        return commentResponse.block();
     }
 
     private static String getQuestionId(URI uri) {

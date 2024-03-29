@@ -24,7 +24,7 @@ public class GithubClientTest {
     public static void beforeAll() {
         wireMockServer = new WireMockServer();
         wireMockServer.start();
-        client = new DefaultGithubClient(wireMockServer.baseUrl());
+        client = new DefaultGithubClient(wireMockServer.baseUrl(), "token");
     }
 
     @Test

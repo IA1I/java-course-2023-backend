@@ -36,9 +36,9 @@ public class StartCommand extends AbstractCommand {
         Mono<String> responseMono = chatClient.registerChat(chatId);
         String response = "";
         try {
-            response = responseMono.block();
+            response = responseMono.doOnError(throwable -> log.error(throwable)).block();
         } catch (Exception e) {
-
+            response = "Error";
         }
 
 

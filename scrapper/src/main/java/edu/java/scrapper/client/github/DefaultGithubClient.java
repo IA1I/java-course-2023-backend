@@ -11,15 +11,17 @@ import reactor.core.publisher.Mono;
 @Log4j2
 public class DefaultGithubClient implements GithubClient {
     private final WebClient webClient;
+    private final String token;
 
     public DefaultGithubClient(ApplicationConfig applicationConfig) {
-        this(applicationConfig.githubBaseUrl());
+        this(applicationConfig.githubBaseUrl(), applicationConfig.githubToken());
     }
 
-    public DefaultGithubClient(String baseUrl) {
+    public DefaultGithubClient(String baseUrl, String token) {
         this.webClient = WebClient.builder()
             .baseUrl(baseUrl)
             .build();
+        this.token = token;
     }
 
     @Override
@@ -27,6 +29,7 @@ public class DefaultGithubClient implements GithubClient {
         return webClient
             .get()
             .uri("/repos/{owner}/{repo}/activity", owner, repo)
+            .header("Authorization", token)
             .retrieve()
             .bodyToMono(new ParameterizedTypeReference<>() {
             });

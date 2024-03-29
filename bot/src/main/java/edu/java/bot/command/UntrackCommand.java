@@ -67,19 +67,4 @@ public class UntrackCommand extends AbstractCommand {
 
         return text.toString();
     }
-
-//    private void processLink(long id, StringBuilder text, String link) {
-//        try {
-//            URL url = URL.parse(link);
-//            User user = userDao.get(id);
-//            if (user.contains(url)) {
-//                log.info("Removed url: {} for user: {}", url, id);
-//                user.removeUrl(url);
-//            }
-//            text.append("untracked");
-//        } catch (GalimatiasParseException e) {
-//            log.info("Invalid URL: {} for user: {}", link, id);
-//            text.append("invalid URL");
-//        }
-//    }
 }

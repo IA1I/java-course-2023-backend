@@ -38,14 +38,21 @@ public class ListCommand extends AbstractCommand {
         Mono<ListLinksResponse> responseMono = linkClient.getAllLinks(chatId);
         ListLinksResponse links = responseMono.block();
         StringBuilder stringBuilder = new StringBuilder();
+
+        int linkNumber = 1;
+        stringBuilder.append("You are tracking the following links: ")
+            .append(LINE_SEPARATOR);
         for (LinkResponse link : links.links()) {
-            stringBuilder.append(link.url())
-                .append(" ")
-                .append("updated")
+            stringBuilder.append(linkNumber)
+                .append(". ")
+                .append(link.url())
                 .append(LINE_SEPARATOR);
+
+            linkNumber++;
         }
 
-        return new SendMessage(chatId, stringBuilder.toString());
+        SendMessage sendMessage = new SendMessage(chatId, stringBuilder.toString());
+        return sendMessage.disableWebPagePreview(true);
     }
 
 }
