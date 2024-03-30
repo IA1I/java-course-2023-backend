@@ -36,7 +36,7 @@ public class UntrackCommand extends AbstractCommand {
     public SendMessage handle(Update update) {
         long chatId = update.message().chat().id();
 
-        return new SendMessage(chatId, getText(update));
+        return new SendMessage(chatId, getText(update)).disableWebPagePreview(true);
     }
 
     private String getText(Update update) {

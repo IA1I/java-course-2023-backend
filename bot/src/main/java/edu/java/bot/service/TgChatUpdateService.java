@@ -27,12 +27,12 @@ public class TgChatUpdateService implements UpdateService {
                 .append(LINE_SEPARATOR)
                 .append("Link ")
                 .append(updateRequest.url())
-                .append("is updated")
+                .append(" is updated")
                 .append(LINE_SEPARATOR)
                 .append(updateRequest.description());
 
             log.info("Tg chat id {} with message:{}", chatId, message);
-            bot.execute(new SendMessage(chatId, message.toString()).disableWebPagePreview(false));
+            bot.execute(new SendMessage(chatId, message.toString()));
         }
     }
 }
