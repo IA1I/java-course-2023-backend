@@ -6,6 +6,8 @@ app:
   github-base-url: https://api.github.com
   stackoverflow-base-url: https://api.stackexchange.com/2.3
   bot-base-url: http://localhost:8090
+  access-type: jdbc
+  github-token: ${github-token}
 
 spring:
   jackson:
@@ -19,7 +21,6 @@ spring:
     password: postgres
   liquibase:
     enabled: false
-
 
 server:
   port: 8080

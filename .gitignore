@@ -18,6 +18,7 @@ target/
 *.iml
 *.ipr
 bot/src/main/resources/token.env
+scrapper/src/main/resources/github-token.env
 
 ### NetBeans ###
 /nbproject/private/

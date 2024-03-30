@@ -23,6 +23,7 @@ public class DefaultBotClient implements BotClient {
         return webClient
             .post()
             .uri("/updates")
+            .bodyValue(request)
             .retrieve()
             .bodyToMono(String.class);
     }
