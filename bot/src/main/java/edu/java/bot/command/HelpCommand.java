@@ -9,18 +9,22 @@ import org.springframework.stereotype.Component;
 @Log4j2
 @Component
 public class HelpCommand extends AbstractCommand {
+
+    private static final String COMMAND_NAME = "/help";
+    private static final String COMMAND_DESCRIPTION = "Display command window";
+
     public HelpCommand(UserMessageProcessor processor) {
         super(processor);
     }
 
     @Override
     public String command() {
-        return "/help";
+        return COMMAND_NAME;
     }
 
     @Override
     public String description() {
-        return "Display command window";
+        return COMMAND_DESCRIPTION;
     }
 
     @Override

@@ -9,8 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.test.annotation.DirtiesContext;
 
-@SpringBootTest(properties = "app.access-type=jdbc")
+@SpringBootTest
 public class MigrationTest extends IntegrationTest {
     @Autowired
     private JdbcClient jdbcClient;

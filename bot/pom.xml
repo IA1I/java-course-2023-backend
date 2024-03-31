@@ -11,6 +11,9 @@
 
     <artifactId>bot</artifactId>
     <version>${revision}</version>
+    <properties>
+
+    </properties>
 
     <dependencies>
         <!-- Web -->

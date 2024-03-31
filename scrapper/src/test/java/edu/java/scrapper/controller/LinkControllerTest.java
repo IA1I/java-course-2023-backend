@@ -21,11 +21,11 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
@@ -276,7 +276,8 @@ public class LinkControllerTest extends IntegrationTest {
             )
         );
         Long tgChatId = 7L;
-        AddLinkRequest request = new AddLinkRequest("https://stackoverflow.com/questions/1642028/what-is-the-operator-in-c-c");
+        AddLinkRequest request =
+            new AddLinkRequest("https://stackoverflow.com/questions/1642028/what-is-the-operator-in-c-c");
         Chat chat = new Chat(0, tgChatId);
 
         chatRepository.save(chat);

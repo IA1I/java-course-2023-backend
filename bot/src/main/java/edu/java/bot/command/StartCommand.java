@@ -12,6 +12,8 @@ import reactor.core.publisher.Mono;
 @Log4j2
 @Component
 public class StartCommand extends AbstractCommand {
+    private static final String COMMAND_NAME = "/start";
+    private static final String COMMAND_DESCRIPTION = "Register a user";
     private final ChatClient chatClient;
 
     @Autowired
@@ -22,12 +24,12 @@ public class StartCommand extends AbstractCommand {
 
     @Override
     public String command() {
-        return "/start";
+        return COMMAND_NAME;
     }
 
     @Override
     public String description() {
-        return "Register a user";
+        return COMMAND_DESCRIPTION;
     }
 
     @Override

@@ -14,6 +14,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static edu.java.scrapper.TestUtils.readFile;
@@ -27,7 +28,7 @@ public class StackOverflowClientTest {
     public static void beforeAll() {
         wireMockServer = new WireMockServer();
         wireMockServer.start();
-        client = new DefaultStackOverflowClient(wireMockServer.baseUrl());
+        client = new DefaultStackOverflowClient(wireMockServer.baseUrl(), Retry.max(1L));
     }
 
     @Test

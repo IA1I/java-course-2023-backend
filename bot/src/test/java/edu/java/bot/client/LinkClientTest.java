@@ -17,6 +17,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
@@ -30,7 +31,7 @@ public class LinkClientTest {
     public static void beforeAll() {
         wireMockServer = new WireMockServer();
         wireMockServer.start();
-        client = new DefaultLinkClient(wireMockServer.baseUrl());
+        client = new DefaultLinkClient(wireMockServer.baseUrl(), Retry.max(1L));
     }
 
     @Test

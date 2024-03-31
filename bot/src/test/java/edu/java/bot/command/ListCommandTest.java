@@ -5,8 +5,11 @@
 //import com.pengrad.telegrambot.model.Update;
 //import com.pengrad.telegrambot.model.User;
 //import com.pengrad.telegrambot.request.SendMessage;
+//import edu.java.bot.client.scrapper.LinkClient;
+//import edu.java.bot.dto.response.LinkResponse;
+//import edu.java.bot.dto.response.ListLinksResponse;
+//import java.util.List;
 //import java.util.Map;
-//
 //import org.assertj.core.api.Assertions;
 //import org.junit.jupiter.api.BeforeAll;
 //import org.junit.jupiter.api.MethodOrderer;
@@ -16,10 +19,15 @@
 //import org.mockito.Mockito;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.beans.factory.annotation.Qualifier;
+//import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 //import org.springframework.boot.test.context.SpringBootTest;
+//import org.springframework.boot.test.mock.mockito.MockBean;
+//import reactor.core.publisher.Mono;
+//import reactor.test.StepVerifier;
 //
 //@SpringBootTest
 //@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+//@AutoConfigureMockMvc
 //public class ListCommandTest {
 //    String LINE_SEPARATOR = System.lineSeparator();
 //
@@ -29,10 +37,11 @@
 //    @Autowired
 //    @Qualifier("startCommand")
 //    private Command startCommand;
-//
 //    @Autowired
 //    @Qualifier("trackCommand")
 //    private Command trackCommand;
+//    @MockBean
+//    private LinkClient linkClient;
 //
 //    static Update updateMock = Mockito.mock(Update.class);
 //    static Message messageMock = Mockito.mock(Message.class);
@@ -47,6 +56,32 @@
 //        Mockito.when(messageMock.from()).thenReturn(userMock);
 //        Mockito.when(userMock.id()).thenReturn(3L);
 //        Mockito.when(messageMock.text()).thenReturn("/track https://github.com/");
+//    }
+//
+//    @Test
+//    void should() {
+//        ListLinksResponse response = new ListLinksResponse(List.of(new LinkResponse(1L, "https://github.com/")), 1);
+//        Mono<ListLinksResponse> mono = Mono.just(response);
+//        Mockito.when(linkClient.getAllLinks(3L)).thenReturn(mono);
+//
+//        StepVerifier.create(mono)
+//            .expectNext(response)
+//            .verifyComplete();
+//    }
+//
+//    @Test
+//    void should2() {
+//        ListLinksResponse response = new ListLinksResponse(List.of(new LinkResponse(1L, "https://github.com/")), 1);
+//        Mono mock = Mockito.mock(Mono.class);
+//        Mono<ListLinksResponse> mono = Mono.just(response);
+//        Mockito.when(linkClient.getAllLinks(3L)).thenReturn(mock);
+//        Mockito.when(mock.block()).thenReturn(response);
+//
+//        StepVerifier.create(mono)
+//            .expectNext(response)
+//            .verifyComplete();
+//        SendMessage message = listCommand.handle(updateMock);
+//        System.out.println(message);
 //    }
 //
 //    @Test

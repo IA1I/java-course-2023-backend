@@ -14,6 +14,8 @@ import reactor.core.publisher.Mono;
 @Log4j2
 @Component
 public class ListCommand extends AbstractCommand {
+    private static final String COMMAND_NAME = "/list";
+    private static final String COMMAND_DESCRIPTION = "Show list of tracked links";
     private final LinkClient linkClient;
 
     @Autowired
@@ -24,12 +26,12 @@ public class ListCommand extends AbstractCommand {
 
     @Override
     public String command() {
-        return "/list";
+        return COMMAND_NAME;
     }
 
     @Override
     public String description() {
-        return "Show list of tracked links";
+        return COMMAND_DESCRIPTION;
     }
 
     @Override

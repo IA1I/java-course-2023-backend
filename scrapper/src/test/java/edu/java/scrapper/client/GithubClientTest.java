@@ -11,6 +11,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static edu.java.scrapper.TestUtils.readFile;
@@ -24,7 +25,7 @@ public class GithubClientTest {
     public static void beforeAll() {
         wireMockServer = new WireMockServer();
         wireMockServer.start();
-        client = new DefaultGithubClient(wireMockServer.baseUrl(), "token");
+        client = new DefaultGithubClient(wireMockServer.baseUrl(), "token", Retry.max(1L));
     }
 
     @Test

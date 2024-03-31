@@ -1,7 +1,9 @@
 package edu.java.scrapper.configuration;
 
 import edu.java.scrapper.utils.AccessType;
+import edu.java.scrapper.utils.BackOffPolicy;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import java.time.Duration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
@@ -20,7 +22,13 @@ public record ApplicationConfig(
     @NotNull
     AccessType accessType,
     @NotNull
-    String githubToken
+    String githubToken,
+    @NotNull
+    BackOffPolicy backOffPolicy,
+    @Positive
+    Long attempts,
+    @NotNull
+    Duration duration
 ) {
     public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
     }

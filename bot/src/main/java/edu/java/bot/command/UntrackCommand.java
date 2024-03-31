@@ -14,6 +14,8 @@ import reactor.core.publisher.Mono;
 @Log4j2
 @Component
 public class UntrackCommand extends AbstractCommand {
+    private static final String COMMAND_NAME = "/untrack";
+    private static final String COMMAND_DESCRIPTION = "Stop tracking a link";
     private final LinkClient linkClient;
 
     @Autowired
@@ -24,12 +26,12 @@ public class UntrackCommand extends AbstractCommand {
 
     @Override
     public String command() {
-        return "/untrack";
+        return COMMAND_NAME;
     }
 
     @Override
     public String description() {
-        return "Stop tracking a link";
+        return COMMAND_DESCRIPTION;
     }
 
     @Override

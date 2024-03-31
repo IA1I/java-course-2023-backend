@@ -14,6 +14,8 @@ import reactor.core.publisher.Mono;
 @Log4j2
 @Component
 public class TrackCommand extends AbstractCommand {
+    private static final String COMMAND_NAME = "/track";
+    private static final String COMMAND_DESCRIPTION = "Start tracking link";
     private final LinkClient linkClient;
 
     @Autowired
@@ -24,12 +26,12 @@ public class TrackCommand extends AbstractCommand {
 
     @Override
     public String command() {
-        return "/track";
+        return COMMAND_NAME;
     }
 
     @Override
     public String description() {
-        return "Start tracking link";
+        return COMMAND_DESCRIPTION;
     }
 
     @Override
