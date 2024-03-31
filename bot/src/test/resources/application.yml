@@ -1,0 +1,37 @@
+app:
+  telegram-token: token
+  scrapper-base-url: http://localhost:8080
+  back-off-policy: linear
+  attempts: 3
+  duration: 5s
+
+spring:
+  application:
+    name: bot
+  jackson:
+    time-zone: UTC
+    property-naming-strategy: SNAKE_CASE
+  liquibase:
+    enabled: false
+  cache:
+    type: none
+
+server:
+  port: 8090
+
+logging:
+  config: classpath:log4j2-plain.xml
+
+bucket4j:
+  enabled: false
+  filters:
+    - cache-name: rate-limit-buckets
+      url: /updates.*
+      strategy: first
+      http-response-body: "{ \"status\": 429, \"error\": \"Too Many Requests\", \"message\": \"You have exhausted your API Request Quota\" }"
+      rate-limits:
+        - cache-key: "getRemoteAddr()"
+          bandwidths:
+            - capacity: 3
+              time: 1
+              unit: seconds

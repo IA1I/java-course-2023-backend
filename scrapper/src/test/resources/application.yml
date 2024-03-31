@@ -1,0 +1,51 @@
+app:
+  scheduler:
+    enable: false
+    interval: 10s
+    force-check-delay: 10s
+  github-base-url: http://localhost:8081
+  stackoverflow-base-url: http://localhost:8081
+  bot-base-url: http://localhost:8081
+  github-token: token
+  access-type: jdbc
+  back-off-policy: linear
+  attempts: 1
+  duration: 1ms
+
+spring:
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+  application:
+    name: scrapper
+  liquibase:
+    enabled: false
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  cache:
+    type: none
+
+server:
+  port: 8080
+
+logging:
+  config: classpath:log4j2-plain.xml
+
+wire-mock:
+  port: 8081
+
+bucket4j:
+  enabled: false
+  filters:
+    - cache-name: rate-limit-buckets
+      url: (/links.*)|(/tg-chat.*)
+      strategy: first
+      http-response-body: "{ \"status\": 429, \"error\": \"Too Many Requests\", \"message\": \"You have exhausted your API Request Quota\" }"
+      rate-limits:
+        - cache-key: "getRemoteAddr()"
+          bandwidths:
+            - capacity: 3
+              time: 1
+              unit: seconds

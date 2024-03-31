@@ -4,12 +4,12 @@ import edu.java.scrapper.IntegrationTest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.test.annotation.DirtiesContext;
 
 @SpringBootTest
 public class MigrationTest extends IntegrationTest {
