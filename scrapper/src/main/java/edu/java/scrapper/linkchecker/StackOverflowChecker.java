@@ -55,7 +55,7 @@ public class StackOverflowChecker extends LinkChecker {
         updateInfo.setUpdatedAt(itemResponse.lastActivityDate());
         updateInfo.setDescription(stringBuilder.toString());
 
-        link.setUpdatedAt(itemResponse.lastActivityDate());
+//        link.setUpdatedAt(itemResponse.lastActivityDate());
         question.setCommentsCount(commentResponse.getCommentsCount());
         question.setAnswersCount(itemResponse.answerCount());
         questionRepository.update(question);

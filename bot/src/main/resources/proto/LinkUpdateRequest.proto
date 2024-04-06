@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option java_outer_classname = "LinkUpdateRequestProto";
+option java_package = "edu.java.bot.dto.proto";
+
+message LinkUpdateRequest {
+    int64 id = 1;
+    string url = 2;
+    string description = 3;
+    repeated int64 tgChatIds = 4;
+}

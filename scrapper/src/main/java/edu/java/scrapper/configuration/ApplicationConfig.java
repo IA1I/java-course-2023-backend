@@ -28,7 +28,9 @@ public record ApplicationConfig(
     @Positive
     Long attempts,
     @NotNull
-    Duration duration
+    Duration duration,
+    @NotNull
+    Boolean useQueue
 ) {
     public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
     }

@@ -37,7 +37,6 @@ public class GithubLinkChecker extends LinkChecker {
         updateInfo.setUpdatedAt(response.timestamp());
         updateInfo.setDescription("Activity type: " + response.activityType());
 
-        link.setUpdatedAt(response.timestamp());
         return updateInfo;
     }
 

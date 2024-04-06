@@ -11,6 +11,7 @@ app:
   back-off-policy: linear
   attempts: 3
   duration: 5s
+  use-queue: false
 
 spring:
   jackson:
@@ -51,3 +52,11 @@ bucket4j:
             - capacity: 10
               time: 1
               unit: seconds
+
+kafka:
+  bootstrapServers: localhost:29091,localhost:29092
+  clientId: scrapper
+  acksMode: all
+  deliveryTimeout: 60s
+  lingerMs: 12_000
+  batchSize: 100_000

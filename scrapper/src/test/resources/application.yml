@@ -1,8 +1,8 @@
 app:
   scheduler:
-    enable: false
-    interval: 10s
-    force-check-delay: 10s
+    enable: true
+    interval: 60m
+    force-check-delay: 60m
   github-base-url: http://localhost:8081
   stackoverflow-base-url: http://localhost:8081
   bot-base-url: http://localhost:8081
@@ -11,6 +11,7 @@ app:
   back-off-policy: linear
   attempts: 1
   duration: 1ms
+  useQueue: false
 
 spring:
   jackson:
@@ -20,10 +21,10 @@ spring:
   liquibase:
     enabled: false
   jpa:
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
   cache:
     type: none
 
@@ -49,3 +50,11 @@ bucket4j:
             - capacity: 3
               time: 1
               unit: seconds
+
+kafka:
+  bootstrapServers: localhost:29091, localhost:29092
+  clientId: scrapper
+  acksMode: all
+  deliveryTimeout: 60s
+  lingerMs: 12_000
+  batchSize: 100_000

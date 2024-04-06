@@ -1,6 +1,5 @@
 package edu.java.scrapper.service.jdbc;
 
-import edu.java.scrapper.client.bot.BotClient;
 import edu.java.scrapper.dao.repository.jdbc.JdbcLinkRepository;
 import edu.java.scrapper.dao.repository.jdbc.JdbcTrackedLinkRepository;
 import edu.java.scrapper.dto.Chat;
@@ -9,6 +8,7 @@ import edu.java.scrapper.dto.request.LinkUpdateRequest;
 import edu.java.scrapper.dto.update_mapper.UpdateInfo;
 import edu.java.scrapper.linkchecker.LinkChecker;
 import edu.java.scrapper.service.LinkUpdater;
+import edu.java.scrapper.service.MessageSender;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -17,25 +17,24 @@ import java.util.Map;
 import java.util.function.Predicate;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.transaction.annotation.Transactional;
-import reactor.core.publisher.Mono;
 
 @Log4j2
 public class JdbcLinksUpdaterService implements LinkUpdater {
     private static final long CHECK_TIME = 3L;
     private final JdbcLinkRepository linkRepository;
     private final JdbcTrackedLinkRepository trackedLinkRepository;
-    private final BotClient botClient;
+    private final MessageSender messageSender;
     public final Map<String, LinkChecker> checkerMap;
 
     public JdbcLinksUpdaterService(
         JdbcLinkRepository linkRepository,
         JdbcTrackedLinkRepository trackedLinkRepository,
-        BotClient botClient,
+        MessageSender messageSender,
         Map<String, LinkChecker> checkerMap
     ) {
         this.linkRepository = linkRepository;
         this.trackedLinkRepository = trackedLinkRepository;
-        this.botClient = botClient;
+        this.messageSender = messageSender;
         this.checkerMap = checkerMap;
     }
 
@@ -51,15 +50,16 @@ public class JdbcLinksUpdaterService implements LinkUpdater {
             LinkChecker linkChecker = checkerMap.get(link.getUri().getHost());
             UpdateInfo updateInfo = linkChecker.getUpdateInformation(link);
 
-            if (updateInfo.getUpdatedAt().isAfter(link.getLastCheck())) {
+            if (updateInfo.getUpdatedAt().isAfter(link.getUpdatedAt())) {
                 LinkUpdateRequest linkUpdateRequest = getLinkUpdateRequest(link, updateInfo);
-                Mono<String> sentUpdate = botClient.sendUpdate(linkUpdateRequest);
-                sentUpdate.block();
+                messageSender.send(linkUpdateRequest);
+
                 log.info("Send update {} to bot", linkUpdateRequest);
 
                 updatesCount++;
             }
 
+            link.setUpdatedAt(updateInfo.getUpdatedAt());
             link.setLastCheck(OffsetDateTime.now(ZoneId.systemDefault()));
             linkRepository.update(link);
         }

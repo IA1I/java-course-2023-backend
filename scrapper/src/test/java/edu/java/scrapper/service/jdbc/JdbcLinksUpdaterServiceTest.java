@@ -145,6 +145,32 @@ public class JdbcLinksUpdaterServiceTest extends IntegrationTest {
         linkService.add(1L, new URI("https://github.com/IA1I/java-course-2023-backend"));
         linkService.add(1L, new URI("https://github.com/IA1I/tinkoff_edu2023"));
         linkService.add(1L, new URI("https://stackoverflow.com/questions/1642028/what-is-the-operator-in-c-c"));
+
+        json = readFile("src/test/resources/links-updater/updated_github_repo_backend_with_update.json");
+        wireMockServer.stubFor(get("/repos/IA1I/java-course-2023-backend/activity")
+            .willReturn(
+                aResponse()
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(json)
+            )
+        );
+        json = readFile("src/test/resources/links-updater/updated_github_repo_tinkoff_with_update.json");
+        wireMockServer.stubFor(get("/repos/IA1I/tinkoff_edu2023/activity")
+            .willReturn(
+                aResponse()
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(json)
+            )
+        );
+        json = readFile("src/test/resources/links-updater/updated_stackoverflow_question_with_update.json");
+        wireMockServer.stubFor(get("/questions/1642028?site=stackoverflow")
+            .willReturn(
+                aResponse()
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(json)
+            )
+        );
+
         int updatesCount = linkUpdater.update();
 
         Assertions.assertThat(updatesCount).isEqualTo(3);
