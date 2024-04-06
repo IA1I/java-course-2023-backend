@@ -35,3 +35,20 @@ bucket4j:
             - capacity: 3
               time: 1
               unit: seconds
+
+kafka:
+  bootstrapServers: localhost:29091, localhost:29092
+  groupId: messages.protobuf.update
+  autoOffsetReset: latest
+  maxPollIntervalMs: 300_000
+  enableAutoCommit: false
+  concurrency: 1
+
+dlq:
+  topic: messages.protobuf.update_dlq
+  replications: 2
+  partitions: 2
+  acks-mode: all
+  delivery-timeout: 60s
+  linger-ms: 12_000
+  batch-size: 100_000
