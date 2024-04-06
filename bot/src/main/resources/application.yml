@@ -1,15 +1,58 @@
 app:
   telegram-token: ${token}
   scrapper-base-url: http://localhost:8080
+  back-off-policy: linear
+  attempts: 3
+  duration: 5s
 
 spring:
   application:
     name: bot
   jackson:
     time-zone: UTC
+  liquibase:
+    enabled: false
+  cache:
+    cache-names:
+      - rate-limit-buckets
+    caffeine:
+      spec: maximumSize=100000,expireAfterAccess=3600s
+    jcache:
+      provider: com.github.benmanes.caffeine.jcache.spi.CaffeineCachingProvider
 
 server:
   port: 8090
 
 logging:
   config: classpath:log4j2-plain.xml
+
+bucket4j:
+  enabled: true
+  filters:
+    - cache-name: rate-limit-buckets
+      url: /updates.*
+      strategy: first
+      http-response-body: "{ \"status\": 429, \"error\": \"Too Many Requests\", \"message\": \"You have exhausted your API Request Quota\" }"
+      rate-limits:
+        - cache-key: "getRemoteAddr()"
+          bandwidths:
+            - capacity: 10
+              time: 1
+              unit: seconds
+
+kafka:
+  bootstrapServers: localhost:29091, localhost:29092
+  groupId: messages.protobuf.update
+  autoOffsetReset: latest
+  maxPollIntervalMs: 300_000
+  enableAutoCommit: false
+  concurrency: 1
+
+dlq:
+  topic: messages.protobuf.update_dlq
+  replications: 2
+  partitions: 2
+  acks-mode: all
+  delivery-timeout: 60s
+  linger-ms: 12_000
+  batch-size: 100_000
