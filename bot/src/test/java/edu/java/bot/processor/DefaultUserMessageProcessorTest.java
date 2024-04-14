@@ -9,6 +9,7 @@ import edu.java.bot.command.Command;
 import edu.java.bot.command.ListCommand;
 import java.util.List;
 import java.util.Map;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,7 @@ public class DefaultUserMessageProcessorTest {
     static void preparation() {
         Command command = new ListCommand(null, null);
         commands = List.of(command);
-        processor = new DefaultUserMessageProcessor(commands);
+        processor = new DefaultUserMessageProcessor(commands, new SimpleMeterRegistry());
 
         Mockito.when(updateMock.message()).thenReturn(messageMock);
         Mockito.when(messageMock.chat()).thenReturn(chatMock);

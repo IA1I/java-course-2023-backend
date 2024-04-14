@@ -52,6 +52,10 @@
 
         <!-- Caffeine -->
         <caffeine.version>3.1.8</caffeine.version>
+
+        <!-- actuator -->
+        <prometheus.version>1.12.5</prometheus.version>
+        <tracing-bridge.version>1.2.5</tracing-bridge.version>
     </properties>
 
     <modules>
@@ -172,6 +176,22 @@
             <groupId>com.github.ben-manes.caffeine</groupId>
             <artifactId>jcache</artifactId>
             <version>${caffeine.version}</version>
+        </dependency>
+
+        <!-- actuator -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <version>${prometheus.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-tracing-bridge-brave</artifactId>
+            <version>${tracing-bridge.version}</version>
         </dependency>
 
     </dependencies>

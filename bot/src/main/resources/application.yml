@@ -56,3 +56,17 @@ dlq:
   delivery-timeout: 60s
   linger-ms: 12_000
   batch-size: 100_000
+
+management:
+  server:
+    port: 8095
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: info,health,prometheus
+      path-mapping:
+        prometheus: metrics
+  metrics:
+    tags:
+      application: ${spring.application.name}

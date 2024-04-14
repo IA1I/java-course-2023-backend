@@ -60,3 +60,17 @@ kafka:
   deliveryTimeout: 60s
   lingerMs: 12_000
   batchSize: 100_000
+
+management:
+  server:
+    port: 8085
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: info,health,prometheus
+      path-mapping:
+        prometheus: metrics
+  metrics:
+    tags:
+      application: ${spring.application.name}
