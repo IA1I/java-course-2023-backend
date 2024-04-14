@@ -6,6 +6,12 @@ app:
   github-base-url: https://api.github.com
   stackoverflow-base-url: https://api.stackexchange.com/2.3
   bot-base-url: http://localhost:8090
+  access-type: jdbc
+  github-token: ${github-token}
+  back-off-policy: linear
+  attempts: 3
+  duration: 5s
+  use-queue: false
 
 spring:
   jackson:
@@ -19,10 +25,52 @@ spring:
     password: postgres
   liquibase:
     enabled: false
-
+  cache:
+    cache-names:
+      - rate-limit-buckets
+    caffeine:
+      spec: maximumSize=100000,expireAfterAccess=3600s
+    jcache:
+      provider: com.github.benmanes.caffeine.jcache.spi.CaffeineCachingProvider
 
 server:
   port: 8080
 
 logging:
   config: classpath:log4j2-plain.xml
+
+bucket4j:
+  enabled: true
+  filters:
+    - cache-name: rate-limit-buckets
+      url: (/links.*)|(/tg-chat.*)
+      strategy: first
+      http-response-body: "{ \"status\": 429, \"error\": \"Too Many Requests\", \"message\": \"You have exhausted your API Request Quota\" }"
+      rate-limits:
+        - cache-key: "getRemoteAddr()"
+          bandwidths:
+            - capacity: 10
+              time: 1
+              unit: seconds
+
+kafka:
+  bootstrapServers: localhost:29091,localhost:29092
+  clientId: scrapper
+  acksMode: all
+  deliveryTimeout: 60s
+  lingerMs: 12_000
+  batchSize: 100_000
+
+management:
+  server:
+    port: 8085
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: info,health,prometheus
+      path-mapping:
+        prometheus: metrics
+  metrics:
+    tags:
+      application: ${spring.application.name}
