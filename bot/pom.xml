@@ -13,7 +13,6 @@
     <version>${revision}</version>
     <properties>
         <protobuf.version>3.16.0</protobuf.version>
-        <os.detected.classifier>windows-x86_64</os.detected.classifier>
     </properties>
 
     <dependencies>
@@ -153,6 +152,13 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
+        <extensions>
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>1.6.1</version>
+            </extension>
+        </extensions>
 
         <plugins>
             <plugin>
