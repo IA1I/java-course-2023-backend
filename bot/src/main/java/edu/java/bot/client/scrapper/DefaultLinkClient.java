@@ -5,23 +5,29 @@ import edu.java.bot.dto.request.AddLinkRequest;
 import edu.java.bot.dto.request.RemoveLinkRequest;
 import edu.java.bot.dto.response.LinkResponse;
 import edu.java.bot.dto.response.ListLinksResponse;
+import edu.java.bot.exception.ServerException;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 public class DefaultLinkClient implements LinkClient {
     private static final String URI_LINKS = "/links";
-    public static final String HEADER_TG_CHAT_ID = "Tg-Chat-Id";
+    private static final String HEADER_TG_CHAT_ID = "Tg-Chat-Id";
+    private static final String MESSAGE = "Server error";
     private final WebClient webClient;
+    private final Retry retry;
 
-    public DefaultLinkClient(ApplicationConfig applicationConfig) {
-        this(applicationConfig.scrapperBaseUrl());
+    public DefaultLinkClient(ApplicationConfig applicationConfig, Retry retry) {
+        this(applicationConfig.scrapperBaseUrl(), retry);
     }
 
-    public DefaultLinkClient(String baseUrl) {
+    public DefaultLinkClient(String baseUrl, Retry retry) {
         this.webClient = WebClient.builder()
             .baseUrl(baseUrl)
             .build();
+        this.retry = retry;
     }
 
     @Override
@@ -31,7 +37,12 @@ public class DefaultLinkClient implements LinkClient {
             .uri(URI_LINKS)
             .header(HEADER_TG_CHAT_ID, String.valueOf(chatId))
             .retrieve()
-            .bodyToMono(ListLinksResponse.class);
+            .onStatus(
+                HttpStatusCode::is5xxServerError,
+                clientResponse -> Mono.error(new ServerException(MESSAGE, clientResponse.statusCode().value()))
+            )
+            .bodyToMono(ListLinksResponse.class)
+            .retryWhen(retry);
     }
 
     @Override
@@ -42,7 +53,12 @@ public class DefaultLinkClient implements LinkClient {
             .header(HEADER_TG_CHAT_ID, String.valueOf(chatId))
             .bodyValue(requestBody)
             .retrieve()
-            .bodyToMono(LinkResponse.class);
+            .onStatus(
+                HttpStatusCode::is5xxServerError,
+                clientResponse -> Mono.error(new ServerException(MESSAGE, clientResponse.statusCode().value()))
+            )
+            .bodyToMono(LinkResponse.class)
+            .retryWhen(retry);
     }
 
     @Override
@@ -53,6 +69,11 @@ public class DefaultLinkClient implements LinkClient {
             .header(HEADER_TG_CHAT_ID, String.valueOf(chatId))
             .bodyValue(requestBody)
             .retrieve()
-            .bodyToMono(LinkResponse.class);
+            .onStatus(
+                HttpStatusCode::is5xxServerError,
+                clientResponse -> Mono.error(new ServerException(MESSAGE, clientResponse.statusCode().value()))
+            )
+            .bodyToMono(LinkResponse.class)
+            .retryWhen(retry);
     }
 }
